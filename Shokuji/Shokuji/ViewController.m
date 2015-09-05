@@ -196,7 +196,7 @@
          NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
          
          NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-         [request setURL:[NSURL URLWithString:@"http://6d2a06c5.ngrok.io/food-analysis"]];
+         [request setURL:[NSURL URLWithString:@"http://usekenko.co/food-analysis"]];
          [request setHTTPMethod:@"POST"];
          [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
          [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];

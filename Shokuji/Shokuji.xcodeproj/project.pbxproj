@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1CCCC11B9B1E73008B131A /* Title.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1CCCC01B9B1E73008B131A /* Title.m */; };
+		0A1CCCC41B9B21C0008B131A /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCC31B9B20EA008B131A /* Roboto-Bold.ttf */; };
+		0A1CCCC51B9B21C2008B131A /* RobotoCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCC21B9B20E4008B131A /* RobotoCondensed-Light.ttf */; };
 		0A5DB6F11B9A8E3300B78CA5 /* DetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */; };
 		0A61A2CC1B9A73E0009A585B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2CB1B9A73E0009A585B /* main.m */; };
 		0A61A2CF1B9A73E0009A585B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2CE1B9A73E0009A585B /* AppDelegate.m */; };
@@ -36,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A1CCCBF1B9B1E73008B131A /* Title.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Title.h; sourceTree = "<group>"; };
+		0A1CCCC01B9B1E73008B131A /* Title.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Title.m; sourceTree = "<group>"; };
+		0A1CCCC21B9B20E4008B131A /* RobotoCondensed-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoCondensed-Light.ttf"; sourceTree = "<group>"; };
+		0A1CCCC31B9B20EA008B131A /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		0A5DB6EF1B9A8E3300B78CA5 /* DetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailView.h; sourceTree = "<group>"; };
 		0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailView.m; sourceTree = "<group>"; };
 		0A61A2C71B9A73E0009A585B /* Shokuji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shokuji.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,11 +120,15 @@
 				0A61A2CE1B9A73E0009A585B /* AppDelegate.m */,
 				0A61A2D01B9A73E0009A585B /* ViewController.h */,
 				0A61A2D11B9A73E0009A585B /* ViewController.m */,
+				0A1CCCBF1B9B1E73008B131A /* Title.h */,
+				0A1CCCC01B9B1E73008B131A /* Title.m */,
 				0A61A2FD1B9A79A4009A585B /* Assets.xcassets */,
 				0A61A2D31B9A73E0009A585B /* Main.storyboard */,
 				0A5DB6EF1B9A8E3300B78CA5 /* DetailView.h */,
 				0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */,
 				0A61A2DB1B9A73E0009A585B /* Info.plist */,
+				0A1CCCC31B9B20EA008B131A /* Roboto-Bold.ttf */,
+				0A1CCCC21B9B20E4008B131A /* RobotoCondensed-Light.ttf */,
 				0A61A2CA1B9A73E0009A585B /* Supporting Files */,
 			);
 			path = Shokuji;
@@ -273,6 +284,8 @@
 			files = (
 				0A61A2FE1B9A79A4009A585B /* Assets.xcassets in Resources */,
 				0A61A2D51B9A73E0009A585B /* Main.storyboard in Resources */,
+				0A1CCCC41B9B21C0008B131A /* Roboto-Bold.ttf in Resources */,
+				0A1CCCC51B9B21C2008B131A /* RobotoCondensed-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +347,7 @@
 				0A5DB6F11B9A8E3300B78CA5 /* DetailView.m in Sources */,
 				0A61A2CF1B9A73E0009A585B /* AppDelegate.m in Sources */,
 				0A61A2CC1B9A73E0009A585B /* main.m in Sources */,
+				0A1CCCC11B9B1E73008B131A /* Title.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
