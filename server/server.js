@@ -135,17 +135,29 @@ app.post('/food-analysis', function (req, res) {
                                   console.log(Math.max( Math.round(parsedData.max_score * 10) / 10, 2.8 ).toFixed(2));
 
                                   for (var key in relevantNutrition.fields) {
-                                    if (relevantNutrition.fields[key] == null) {
-                                      relevantNutrition.fields[key] = "0";
+                                    if (key !== "item_name") {
+                                      if (key !== "nf_calories") {
+                                        if (key !== "nf_serving_size_qty") {
+                                          if (key !== "nf_serving_size_unit") {
+                                            if ((key.indexOf("allergens") > -1) == false) {
+                                                  if (relevantNutrition.fields[key] == null) {
+                                                    relevantNutrition.fields[key] = "0";
+                                                  }
+
+                                                  if (key == "nf_sodium") {
+                                                    relevantNutrition.fields[key] += "mg";
+                                                  } else if (key == "nf_cholesterol") {
+                                                    relevantNutrition.fields[key] += "mg";
+                                                  } else {
+                                                    relevantNutrition.fields[key] += "g";
+                                                  }
+                                            }
+                                          }
+                                        }
+                                      }
                                     }
 
-                                    if (key == "nf_sodium") {
-                                      relevantNutrition.fields[key] += "mg";
-                                    } else if (key == "nf_cholesterol") {
-                                      relevantNutrition.fields[key] += "mg";
-                                    } else {
-                                      relevantNutrition.fields[key] += "g";
-                                    }
+
 
                                   }
 
