@@ -22,6 +22,7 @@ app.use(function(req, res, next) { // enable CORS
   next();
 });
 
+
 var port = 3000;
 
 // for getting network data
@@ -45,26 +46,60 @@ app.post('/food-analysis', function (req, res) {
       console.log((process.env.HOSTNAME+"/uploaded_img/"+imageID).blue);
 
       var form = {
-          'image_request[image]': process.env.HOSTNAME+"/uploaded_img/"+imageID,
+          'image_request[remote_image_url]': process.env.HOSTNAME+"/uploaded_img/"+imageID+".jpeg",
           "image_request[locale]": "en-US"
       };
 
       var formData = querystring.stringify(form);
       var contentLength = formData.length;
 
-      request({
-          headers: {
-            'Authorization': 'CloudSight ['+ process.env.CLOUDSIGHT_KEY_1+']',
-            'Content-Length': contentLength,
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          uri: 'https://api.cloudsightapi.com/image_requests',
-          body: formData,
-          method: 'POST'
-        }, function (err, res, body) {
-          //it works!
-          console.log(body);
-        });
+      console.log(process.env.CLOUDSIGHT_KEY);
+
+
+        request({
+            headers: {
+              'Authorization': 'CloudSight '+ process.env.CLOUDSIGHT_KEY,
+              'Content-Length': contentLength,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            uri: 'https://api.cloudsightapi.com/image_requests',
+            body: formData,
+            method: 'POST'
+          }, function (err, res, body) {
+            //it works!
+            if (err) {
+              res.send({"Error": "There was an error from images-request"})
+            } else {
+              console.log(body);
+              var resToken = JSON.parse(body).token;
+
+              console.log("Processing image information...".cyan);
+
+              loopResponseCloud();
+              function loopResponseCloud() {
+                  request({url: "https://api.cloudsightapi.com/image_responses/"+resToken, headers: {'Authorization': 'CloudSight '+ process.env.CLOUDSIGHT_KEY}}, function (resError, resResponse, resBody) {
+                      if (JSON.parse(resBody).status == "not completed") {
+                        loopResponseCloud();
+                      } else {
+                        console.log(resBody);
+                        if (typeof resBody.name !== "undefined") {
+                          console.log((JSON.parse(resBody).name).green);
+                        } else {
+                          res.send({"Error": "There was an error."});
+                        }
+
+
+
+
+                      }
+                  });
+                }
+
+            }
+
+          });
+
+
 
 
     });
@@ -75,7 +110,7 @@ app.post('/food-analysis', function (req, res) {
 
 app.get('/uploaded_img/:id', function (req, res) {
   res.set('Content-Type', 'application/jpeg');
-  res.sendFile(__dirname + "/uploaded_data/" +req.param('id')+".jpeg");
+  res.sendFile(__dirname + "/uploaded_data/" +req.param('id'));
 });
 
 
