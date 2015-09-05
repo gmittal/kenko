@@ -57,7 +57,7 @@
     [self.view addSubview:bg];
     
     scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, dWidth, dHeight)];
-    scroll.contentSize = CGSizeMake(dWidth, dHeight+100);
+    scroll.contentSize = CGSizeMake(dWidth, dHeight+10);
     [self.view addSubview:scroll];
     [scroll setShowsVerticalScrollIndicator:NO];
 //    [scroll sets]
@@ -106,18 +106,21 @@
     NSData *tdata = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     id json = [NSJSONSerialization JSONObjectWithData:tdata options:0 error:nil];
     
-    UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(20,margin+5, dWidth, 20)];
+    UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(20,margin+5, dWidth - 35, 20)];
     title.text = json[@"result"][@"object_name"];
     title.textColor = [UIColor whiteColor];
-    title.font = [UIFont fontWithName:@"HelveticaNeue" size:20];
+    title.font = [UIFont fontWithName:@"HelveticaNeue" size:16];
     title.numberOfLines = 1;
+    title.adjustsFontSizeToFitWidth = NO;
+    title.lineBreakMode = NSLineBreakByTruncatingTail;
     [scroll addSubview:title];
     [title sizeToFit];
     
-    UILabel* calories = [[UILabel alloc] initWithFrame:CGRectMake(20,margin+30, dWidth - 35, 50)];
-    calories.text = [NSString stringWithFormat:@"Calories: %@",json[@"result"][@"data"][@"fields"][@"nf_calories"]];
+    UILabel* calories = [[UILabel alloc] initWithFrame:CGRectMake(20,margin+5, dWidth - 35, 50)];
+    calories.text = [NSString stringWithFormat:@"%@ cal",json[@"result"][@"data"][@"fields"][@"nf_calories"]];
+    calories.textAlignment = NSTextAlignmentRight;
     calories.textColor = [UIColor whiteColor];
-    calories.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
+    calories.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
     calories.numberOfLines = 1;
     [scroll addSubview:calories];
     [calories sizeToFit];
