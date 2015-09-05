@@ -114,10 +114,13 @@ app.post('/food-analysis', function (req, res) {
                                 res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
                               } else {
                                 var parsedData = JSON.parse(nutriBody);
-                                if (parsedData.max_score > 1) {
+                                console.log(("NUTRITIONAL RELEVANCE SCORE: " + parsedData.max_score).magenta);
+                                if (parsedData.max_score > 0.68) {
                                   var relevantNutrition = parsedData.hits[0];
+                                  console.log(relevantNutrition);
+                                  console.log(relevantNutrition.fields.item_name);
 
-                                  var easyDisplayName = toTitleCase((JSON.parse(resBody).name).split(" ")[0]); // so it looks better on the iphone
+                                  var easyDisplayName = toTitleCase(relevantNutrition.fields.item_name); // so it looks better on the iphone
                                   console.log("EVERYTHING WORKED".green);
                                   res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
 
@@ -163,7 +166,7 @@ app.get('/uploaded_img/:id', function (req, res) {
 // UPC product scans
 app.post('/upc-analysis', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
-  
+
   if (req.body.upc) {
     var upcData = {
       code: req.body.upc,
