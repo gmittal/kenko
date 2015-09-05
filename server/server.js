@@ -133,6 +133,22 @@ app.post('/food-analysis', function (req, res) {
                                   var easyDisplayName = toTitleCase(relevantNutrition.fields.item_name); // so it looks better on the iphone
                                   console.log("EVERYTHING WORKED".green);
                                   console.log(Math.max( Math.round(parsedData.max_score * 10) / 10, 2.8 ).toFixed(2));
+
+                                  for (var key in relevantNutrition.fields) {
+                                    if (relevantNutrition.fields[key] == null) {
+                                      relevantNutrition.fields[key] = "0";
+                                    }
+
+                                    if (key == "nf_sodium") {
+                                      relevantNutrition.fields[key] += "mg";
+                                    } else if (key == "nf_cholesterol") {
+                                      relevantNutrition.fields[key] += "mg";
+                                    } else {
+                                      relevantNutrition.fields[key] += "g";
+                                    }
+
+                                  }
+
                                   res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "confidence": Math.max( Math.round(parsedData.max_score * 10) / 10, 2.8 ).toFixed(2), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
 
 
