@@ -59,9 +59,11 @@ install_resource()
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "${BUILT_PRODUCTS_DIR}/BALoadingView.bundle"
+  install_resource "${BUILT_PRODUCTS_DIR}/FSMediaPicker.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${BUILT_PRODUCTS_DIR}/BALoadingView.bundle"
+  install_resource "${BUILT_PRODUCTS_DIR}/FSMediaPicker.bundle"
 fi
 
 mkdir -p "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

@@ -5,6 +5,7 @@ target 'Shokuji' do
 
 pod 'BALoadingView', '~> 0.1'
 pod 'ZXingObjC', '~> 3.0'
+pod 'FSMediaPicker', '~> 0.0'
 
 end
 

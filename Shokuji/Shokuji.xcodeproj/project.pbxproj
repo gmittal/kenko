@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A1CCCC11B9B1E73008B131A /* Title.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1CCCC01B9B1E73008B131A /* Title.m */; };
-		0A1CCCC41B9B21C0008B131A /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCC31B9B20EA008B131A /* Roboto-Bold.ttf */; };
-		0A1CCCC51B9B21C2008B131A /* RobotoCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCC21B9B20E4008B131A /* RobotoCondensed-Light.ttf */; };
+		0A1CCCC81B9B261B008B131A /* Title.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1CCCC71B9B261B008B131A /* Title.m */; };
+		0A1CCCCB1B9B265C008B131A /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCC91B9B2620008B131A /* Roboto-Bold.ttf */; };
+		0A1CCCCC1B9B265D008B131A /* RobotoCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCCA1B9B2620008B131A /* RobotoCondensed-Light.ttf */; };
+		0A1CCCCE1B9B2B99008B131A /* camera-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCCD1B9B2B99008B131A /* camera-button.png */; };
+		0A1CCCD01B9B5380008B131A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1CCCCF1B9B5380008B131A /* MobileCoreServices.framework */; };
 		0A5DB6F11B9A8E3300B78CA5 /* DetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */; };
 		0A61A2CC1B9A73E0009A585B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2CB1B9A73E0009A585B /* main.m */; };
 		0A61A2CF1B9A73E0009A585B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2CE1B9A73E0009A585B /* AppDelegate.m */; };
@@ -39,10 +41,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0A1CCCBF1B9B1E73008B131A /* Title.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Title.h; sourceTree = "<group>"; };
-		0A1CCCC01B9B1E73008B131A /* Title.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Title.m; sourceTree = "<group>"; };
-		0A1CCCC21B9B20E4008B131A /* RobotoCondensed-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoCondensed-Light.ttf"; sourceTree = "<group>"; };
-		0A1CCCC31B9B20EA008B131A /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		0A1CCCC61B9B261B008B131A /* Title.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Title.h; sourceTree = "<group>"; };
+		0A1CCCC71B9B261B008B131A /* Title.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Title.m; sourceTree = "<group>"; };
+		0A1CCCC91B9B2620008B131A /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		0A1CCCCA1B9B2620008B131A /* RobotoCondensed-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoCondensed-Light.ttf"; sourceTree = "<group>"; };
+		0A1CCCCD1B9B2B99008B131A /* camera-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-button.png"; sourceTree = "<group>"; };
+		0A1CCCCF1B9B5380008B131A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		0A5DB6EF1B9A8E3300B78CA5 /* DetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailView.h; sourceTree = "<group>"; };
 		0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailView.m; sourceTree = "<group>"; };
 		0A61A2C71B9A73E0009A585B /* Shokuji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shokuji.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A1CCCD01B9B5380008B131A /* MobileCoreServices.framework in Frameworks */,
 				FA3F81A6E6CBC00D1C31FC10 /* libPods-Shokuji.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,15 +125,16 @@
 				0A61A2CE1B9A73E0009A585B /* AppDelegate.m */,
 				0A61A2D01B9A73E0009A585B /* ViewController.h */,
 				0A61A2D11B9A73E0009A585B /* ViewController.m */,
-				0A1CCCBF1B9B1E73008B131A /* Title.h */,
-				0A1CCCC01B9B1E73008B131A /* Title.m */,
 				0A61A2FD1B9A79A4009A585B /* Assets.xcassets */,
 				0A61A2D31B9A73E0009A585B /* Main.storyboard */,
 				0A5DB6EF1B9A8E3300B78CA5 /* DetailView.h */,
 				0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */,
 				0A61A2DB1B9A73E0009A585B /* Info.plist */,
-				0A1CCCC31B9B20EA008B131A /* Roboto-Bold.ttf */,
-				0A1CCCC21B9B20E4008B131A /* RobotoCondensed-Light.ttf */,
+				0A1CCCCD1B9B2B99008B131A /* camera-button.png */,
+				0A1CCCC61B9B261B008B131A /* Title.h */,
+				0A1CCCC71B9B261B008B131A /* Title.m */,
+				0A1CCCC91B9B2620008B131A /* Roboto-Bold.ttf */,
+				0A1CCCCA1B9B2620008B131A /* RobotoCondensed-Light.ttf */,
 				0A61A2CA1B9A73E0009A585B /* Supporting Files */,
 			);
 			path = Shokuji;
@@ -172,6 +178,7 @@
 		A46550E7320DF79730E67727 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0A1CCCCF1B9B5380008B131A /* MobileCoreServices.framework */,
 				C15B439E847E773E7436BD65 /* libPods-Shokuji.a */,
 			);
 			name = Frameworks;
@@ -284,8 +291,9 @@
 			files = (
 				0A61A2FE1B9A79A4009A585B /* Assets.xcassets in Resources */,
 				0A61A2D51B9A73E0009A585B /* Main.storyboard in Resources */,
-				0A1CCCC41B9B21C0008B131A /* Roboto-Bold.ttf in Resources */,
-				0A1CCCC51B9B21C2008B131A /* RobotoCondensed-Light.ttf in Resources */,
+				0A1CCCCB1B9B265C008B131A /* Roboto-Bold.ttf in Resources */,
+				0A1CCCCC1B9B265D008B131A /* RobotoCondensed-Light.ttf in Resources */,
+				0A1CCCCE1B9B2B99008B131A /* camera-button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +355,7 @@
 				0A5DB6F11B9A8E3300B78CA5 /* DetailView.m in Sources */,
 				0A61A2CF1B9A73E0009A585B /* AppDelegate.m in Sources */,
 				0A61A2CC1B9A73E0009A585B /* main.m in Sources */,
-				0A1CCCC11B9B1E73008B131A /* Title.m in Sources */,
+				0A1CCCC81B9B261B008B131A /* Title.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

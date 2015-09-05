@@ -14,6 +14,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FSMediaPicker-FSMediaPicker.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FSMediaPicker.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Shokuji.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,17 +42,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>550788045E18300A5220F1CF49B9369B</key>
+		<key>3BBDAE32D32E312222BBA49311D888A2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6C8A77873E3B6FB7733AF0DCF0D8E560</key>
+		<key>758615000B0308C2ECB4795014BDBCC4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C0BFDB8FACD215D9B22D9338A7E066C2</key>
+		<key>819CA72FDEB132CE3F7C0C565B18969F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9F540527D3818BDECF768F61F2A5CCEA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EB2DEA21986C5280CD03912C44AAF318</key>
 		<dict>
 			<key>primary</key>
 			<true/>

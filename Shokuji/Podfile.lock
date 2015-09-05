@@ -1,15 +1,18 @@
 PODS:
   - BALoadingView (0.1.0)
+  - FSMediaPicker (0.0.2)
   - ZXingObjC (3.1.0):
     - ZXingObjC/All (= 3.1.0)
   - ZXingObjC/All (3.1.0)
 
 DEPENDENCIES:
   - BALoadingView (~> 0.1)
+  - FSMediaPicker (~> 0.0)
   - ZXingObjC (~> 3.0)
 
 SPEC CHECKSUMS:
   BALoadingView: 3117f79ee2307f35d3d097ae11fb092a4e185487
+  FSMediaPicker: 89c5fe9894a288db7c87c255bdb7856e33dc4073
   ZXingObjC: bf15b3814f7a105b6d99f47da2333c93a063650a
 
 COCOAPODS: 0.38.2

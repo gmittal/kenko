@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FSMediaPicker/FSMediaPicker.h>
 
-@interface Title : UIViewController
+
+@interface Title : UIViewController<FSMediaPickerDelegate>
 
 @end

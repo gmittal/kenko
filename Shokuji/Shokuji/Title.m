@@ -8,6 +8,7 @@
 
 #import "Title.h"
 #import "ViewController.h"
+#import "DetailView.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface Title ()
@@ -82,6 +83,7 @@
     label2.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.65];
     label2.text = @"Choose Photo";
     [self.view addSubview:label2];
+    [button2 addTarget:self action:@selector(choosePhoto) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -92,9 +94,64 @@
 -(void) takePhoto
 {
     ViewController* vc = [[ViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
 //    [self.view addSubview:vc.view];
-    [self presentViewController:vc animated:NO completion:^{}];
-    CFRunLoopWakeUp(CFRunLoopGetCurrent());
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:vc animated:NO completion:^{}];
+    });
+}
+
+
+-(void) choosePhoto
+{
+    FSMediaPicker *picker = [[FSMediaPicker alloc] init];
+    picker.delegate = self;
+//    picker.
+    [picker showFromView:self.view];
+    
+    
+
+}
+
+
+- (void)mediaPicker:(FSMediaPicker *)mediaPicker didFinishWithMediaInfo:(NSDictionary *)mediaInfo
+{
+    
+    NSLog(@"pick");
+    
+    NSData *imageData2 = UIImageJPEGRepresentation(mediaInfo.editedImage, 1.0);
+    NSString *encodedString = [imageData2 base64Encoding];
+    
+    
+    encodedString = [encodedString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+    
+    //         NSLog(encodedString);
+    
+    NSString *post = [NSString stringWithFormat:@"image=%@",encodedString];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:@"http://usekenko.co/food-analysis"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    
+    
+    DetailView* dv = [[DetailView alloc] init];
+    [dv setParent:self];
+    dv.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    [self presentViewController:dv animated:NO completion:^{}];
+    
+    [dv sendRequest:request];
+    [dv setImage:mediaInfo.editedImage];
+//    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*

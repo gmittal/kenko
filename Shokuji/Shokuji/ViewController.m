@@ -36,6 +36,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    
+
+//    UIImageView* cameraview
+    // Do any additional setup after loading the view, typically from a nib.
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    
+    
     AVCaptureSession *session = [[AVCaptureSession alloc] init];
     session.sessionPreset = AVCaptureSessionPresetHigh;
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -45,17 +56,14 @@
     AVCaptureVideoPreviewLayer *newCaptureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
     newCaptureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     newCaptureVideoPreviewLayer.frame = CGRectMake(0, 0, dWidth, dHeight);
-//    newCaptureVideoPreviewLayer.la
+    //    newCaptureVideoPreviewLayer.la
     [self.view.layer addSublayer:newCaptureVideoPreviewLayer];
     [session startRunning];
     
-    capturedView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, dWidth, dHeight)];
-//    capturedView.image = image;
-    [self.view addSubview:capturedView];
-
+//    capturedView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, dWidth, dHeight)];
+//    //    capturedView.image = image;
+//    [self.view addSubview:capturedView];
     
-    
-
     
     stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
     NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
@@ -77,12 +85,24 @@
     gradient2.colors = [NSArray arrayWithObjects:(id)[[[UIColor blackColor] colorWithAlphaComponent:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil];
     [topGrad.layer insertSublayer:gradient2 atIndex:0];
     
+    UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(0, -10, self.view.frame.size.width, 100)];
+    title.font = [UIFont fontWithName:@"Roboto-Bold" size:40];
+    title.textAlignment = NSTextAlignmentCenter;
+    title.textColor = [UIColor whiteColor];
+    title.text = @"kenko";
+    [self.view addSubview:title];
+    
+    UIView* bar = [[UIView alloc] initWithFrame:CGRectMake(100, -10+80, self.view.frame.size.width - 200, 2)];
+    bar.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:bar];
+    
     float width = 75;
     float height = 75;
     capture = [[UIButton alloc] initWithFrame:CGRectMake(dWidth/2 - (width/2), dHeight - height*1.3, width, height)];
-    capture.layer.cornerRadius = 75/2.0;
-    capture.layer.borderColor = [[UIColor whiteColor] CGColor];
-    capture.layer.borderWidth= 1;
+//    capture.layer.cornerRadius = 75/2.0;
+//    capture.layer.borderColor = [[UIColor whiteColor] CGColor];
+//    capture.layer.borderWidth= 1;
+    [capture setImage:[UIImage imageNamed:@"camera-button.png"] forState:UIControlStateNormal];
     
     capture.backgroundColor = [UIColor clearColor];
     
@@ -96,13 +116,16 @@
     [self.view addSubview:capture];
     
     [capture addTarget:self action:@selector(capture) forControlEvents:UIControlEventTouchUpInside];
-    
-
-//    UIImageView* cameraview
-    // Do any additional setup after loading the view, typically from a nib.
 }
 
 
+
+-(void)close
+{
+//    [myParent reload];
+    [self dismissViewControllerAnimated:NO completion:^{}];
+    
+}
 
 -(BOOL) barcode:(UIImage*) image
 {
@@ -177,9 +200,9 @@
          if(![self barcode:image])
          {
          
-         capturedView.image = image;
-         label.layer.opacity = 0;
-         capture.layer.opacity = 0;
+//         capturedView.image = image;
+//         label.layer.opacity = 0;
+//         capture.layer.opacity = 0;
          
          
          NSData *imageData2 = UIImageJPEGRepresentation(image, 1.0);
@@ -210,6 +233,7 @@
          self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
          
          [dv sendRequest:request];
+         [dv setImage:image];
          
          
          UIView* v = [[UIView alloc] initWithFrame: CGRectMake(0, 0, dWidth, dHeight)];
@@ -231,7 +255,7 @@
 
 -(void) reload
 {
-    capturedView.image = NULL;
+//    capturedView.image = NULL;
     label.layer.opacity = 1;
     capture.layer.opacity = 1;
 }
