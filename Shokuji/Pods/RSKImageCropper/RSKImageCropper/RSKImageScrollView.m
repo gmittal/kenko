@@ -86,21 +86,6 @@
     [self centerZoomView];
 }
 
-- (void)setAspectFill:(BOOL)aspectFill
-{
-    if (_aspectFill != aspectFill) {
-        _aspectFill = aspectFill;
-        
-        if (_zoomView) {
-            [self setMaxMinZoomScalesForCurrentBounds];
-            
-            if (self.zoomScale < self.minimumZoomScale) {
-                self.zoomScale = self.minimumZoomScale;
-            }
-        }
-    }
-}
-
 - (void)setFrame:(CGRect)frame
 {
     BOOL sizeChanging = !CGSizeEqualToSize(frame.size, self.frame.size);

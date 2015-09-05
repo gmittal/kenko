@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RSKImageCropper.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>ZXingObjC.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,32 +42,37 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0577DED5F449A67522B1E21C0DCA7260</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>24BEBB5E3E4F69F2F80D82F70C284637</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>366131078BA66DCFC0FC84FDA17B7FFD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3BBDAE32D32E312222BBA49311D888A2</key>
+		<key>5F6416CF5FFC61AAC38606C5194D3D79</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>758615000B0308C2ECB4795014BDBCC4</key>
+		<key>616D2A54ADF8107C2C59DE629087428D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>819CA72FDEB132CE3F7C0C565B18969F</key>
+		<key>7202CC62F968C4405CEC392F8CF26D1B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9F540527D3818BDECF768F61F2A5CCEA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EB2DEA21986C5280CD03912C44AAF318</key>
+		<key>F365FBAB7FE5AA95A52702AA9529AD33</key>
 		<dict>
 			<key>primary</key>
 			<true/>

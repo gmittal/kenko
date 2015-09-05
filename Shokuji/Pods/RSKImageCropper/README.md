@@ -1,4 +1,4 @@
-## RSKImageCropper [![Build Status](https://travis-ci.org/ruslanskorb/RSKImageCropper.svg)](https://travis-ci.org/ruslanskorb/RSKImageCropper) [![Coverage Status](https://coveralls.io/repos/ruslanskorb/RSKImageCropper/badge.svg)](https://coveralls.io/r/ruslanskorb/RSKImageCropper) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/ruslanskorb/RSKImageCropper)
+## RSKImageCropper
 
 <p align="center">
 	<img src="Screenshot.png" alt="Sample">
@@ -7,27 +7,14 @@
 An image cropper for iOS like in the Contacts app with support for landscape orientation.
 
 ## Installation
-*RSKImageCropper requires iOS 6.0 or later.*
 
-### Using [CocoaPods](http://cocoapods.org)
+[CocoaPods](http://cocoapods.org) is the recommended method of installing RSKImageCropper. Simply add the following line to your `Podfile`:
 
-1.  Add the pod `RSKImageCropper` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
+#### Podfile
 
-        pod 'RSKImageCropper'
-
-2.  Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
-3.  Import the `RSKImageCropper.h` header. Typically, this should be written as `#import <RSKImageCropper/RSKImageCropper.h>`
-
-### Using [Carthage](https://github.com/Carthage/Carthage)
-
-1.  Add the `ruslanskorb/RSKImageCropper` project to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).
-
-        github "ruslanskorb/RSKImageCropper"
-
-2.  Run `carthage update`, then follow the [additional steps required](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application) to add the iOS and/or Mac frameworks into your project.
-3.  Import the RSKImageCropper framework/module.
-    *  Using Modules: `@import RSKImageCropper`
-    *  Without Modules: `#import <RSKImageCroper/RSKImageCropper.h>`
+```ruby
+pod 'RSKImageCropper'
+```
 
 ## Basic Usage
 
@@ -51,7 +38,7 @@ Just create a view controller for image cropping and set the delegate.
 
 ## Delegate
 
-`RSKImageCropViewControllerDelegate` provides four delegate methods. To use them, implement the delegate in your view controller.
+`RSKImageCropViewControllerDelegate` provides three delegate methods. To use them, implement the delegate in your view controller.
 
 ```objective-c
 @interface ViewController () <RSKImageCropViewControllerDelegate>
@@ -67,27 +54,14 @@ Then implement the delegate functions.
 }
 
 // The original image has been cropped.
-- (void)imageCropViewController:(RSKImageCropViewController *)controller
-                   didCropImage:(UIImage *)croppedImage
-                  usingCropRect:(CGRect)cropRect
-{
-    self.imageView.image = croppedImage;
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-// The original image has been cropped. Additionally provides a rotation angle used to produce image.
-- (void)imageCropViewController:(RSKImageCropViewController *)controller
-                   didCropImage:(UIImage *)croppedImage
-                  usingCropRect:(CGRect)cropRect
-                  rotationAngle:(CGFloat)rotationAngle
+- (void)imageCropViewController:(RSKImageCropViewController *)controller didCropImage:(UIImage *)croppedImage
 {
     self.imageView.image = croppedImage;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 // The original image will be cropped.
-- (void)imageCropViewController:(RSKImageCropViewController *)controller
-                  willCropImage:(UIImage *)originalImage
+- (void)imageCropViewController:(RSKImageCropViewController *)controller willCropImage:(UIImage *)originalImage
 {
     // Use when `applyMaskToCroppedImage` set to YES.
     [SVProgressHUD show];
@@ -96,7 +70,7 @@ Then implement the delegate functions.
 
 ## DataSource
 
-`RSKImageCropViewControllerDataSource` provides three data source methods. The method `imageCropViewControllerCustomMaskRect:` asks the data source a custom rect for the mask. The method `imageCropViewControllerCustomMaskPath:` asks the data source a custom path for the mask. The method `imageCropViewControllerCustomMovementRect:` asks the data source a custom rect in which the image can be moved. To use them, implement the data source in your view controller.
+`RSKImageCropViewControllerDataSource` provides two data source methods. The method `imageCropViewControllerCustomMaskRect:` asks the data source a custom rect for the mask. The method `imageCropViewControllerCustomMaskPath:` asks the data source a custom path for the mask. To use them, implement the data source in your view controller.
 
 ```objective-c
 @interface ViewController () <RSKImageCropViewControllerDataSource>
@@ -141,13 +115,6 @@ Then implement the data source functions.
     [triangle closePath];
     
     return triangle;
-}
-
-// Returns a custom rect in which the image can be moved.
-- (CGRect)imageCropViewControllerCustomMovementRect:(RSKImageCropViewController *)controller
-{
-    // If the image is not rotated, then the movement rect coincides with the mask rect.
-    return controller.maskRect;
 }
 ```
 

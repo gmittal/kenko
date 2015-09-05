@@ -1,0 +1,6 @@
+#include "FSMediaPicker.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/FSMediaPicker" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/BALoadingView" "${PODS_ROOT}/Headers/Public/FSMediaPicker" "${PODS_ROOT}/Headers/Public/RSKImageCropper" "${PODS_ROOT}/Headers/Public/ZXingObjC"
+OTHER_LDFLAGS = ${FSMEDIAPICKER_OTHER_LDFLAGS}
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES

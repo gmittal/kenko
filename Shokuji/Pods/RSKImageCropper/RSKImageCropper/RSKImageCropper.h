@@ -1,7 +1,7 @@
 //
 // RSKImageCropper.h
 //
-// Copyright (c) 2014-present Ruslan Skorb, http://ruslanskorb.com/
+// Copyright (c) 2014 Ruslan Skorb, http://ruslanskorb.com/
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,4 @@
  `RSKImageCropper` is an image cropper for iOS like in the Contacts app with support for landscape orientation.
  */
 
-#import <Foundation/Foundation.h>
-
-//! Project version number for RSKImageCropper.
-FOUNDATION_EXPORT double RSKImageCropperVersionNumber;
-
-//! Project version string for RSKImageCropper.
-FOUNDATION_EXPORT const unsigned char RSKImageCropperVersionString[];
-
-#import <RSKImageCropper/RSKImageCropViewController.h>
-#import <RSKImageCropper/RSKImageCropViewController+Protected.h>
+#import "RSKImageCropViewController.h"

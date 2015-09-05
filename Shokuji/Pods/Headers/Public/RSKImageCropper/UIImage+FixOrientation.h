@@ -1,0 +1,1 @@
+../../../RSKImageCropper/RSKImageCropper/UIImage+FixOrientation.h
