@@ -132,7 +132,7 @@ app.post('/food-analysis', function (req, res) {
 
                                   var easyDisplayName = toTitleCase(relevantNutrition.fields.item_name); // so it looks better on the iphone
                                   console.log("EVERYTHING WORKED".green);
-                                  res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
+                                  res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "confidence": parsedData.max_score, "easy_display_name": easyDisplayName, "data": relevantNutrition}});
 
 
 
