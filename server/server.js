@@ -139,7 +139,7 @@ app.post('/food-analysis', function (req, res) {
                                       if (key !== "nf_calories") {
                                         if (key !== "nf_serving_size_qty") {
                                           if (key !== "nf_serving_size_unit") {
-                                            if ((key.indexOf("allergens") > -1) == false) {
+                                            if ((key.indexOf("allergen") > -1) == false) {
                                                   if (relevantNutrition.fields[key] == null) {
                                                     relevantNutrition.fields[key] = "0";
                                                   }
