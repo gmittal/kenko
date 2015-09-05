@@ -37,7 +37,7 @@ app.post('/food-analysis', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
 
   if (req.body.image) {
-    console.log((req.body.image).grey);
+    // console.log((req.body.image).grey);
 
     var imageID = generatePushID(); // generate a unique token for each image
 
@@ -95,7 +95,7 @@ app.post('/food-analysis', function (req, res) {
                             "appId":process.env.NUTRITION_APP_ID,
                             "appKey":process.env.NUTRITION_API_KEY,
                             "phrase":JSON.parse(resBody).name,
-                            "fields":"item_name,brand_name,item_id,brand_id",
+                            "fields":"*",
                             "results":"0:50",
                             "cal_min":0,
                             "cal_max":50000
@@ -103,6 +103,7 @@ app.post('/food-analysis', function (req, res) {
                           };
 
                           var nutritionData = querystring.stringify(nutritionalParameters);
+
 
                           request({
                               uri: 'https://api.nutritionix.com/v1_1/search/'+encodeURIComponent(nutritionalParameters.phrase)+"?results="+encodeURIComponent(nutritionalParameters.results)+"&cal_min="+nutritionalParameters.cal_min+"&cal_max="+nutritionalParameters.cal_max+"&fields="+encodeURIComponent(nutritionalParameters.fields)+"&appId="+nutritionalParameters.appId+"&appKey="+nutritionalParameters.appKey,
@@ -112,7 +113,20 @@ app.post('/food-analysis', function (req, res) {
                               if (nutriErr) {
                                 res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
                               } else {
-                                console.log(prettyjson.render(nutriBody));
+                                var parsedData = JSON.parse(nutriBody);
+                                if (parsedData.max_score > 1) {
+                                  var relevantNutrition = parsedData.hits[0];
+
+                                  var easyDisplayName = toTitleCase((JSON.parse(resBody).name).split(" ")[0]); // so it looks better on the iphone
+                                  console.log("EVERYTHING WORKED".green);
+                                  res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
+
+
+
+                                } else {
+                                  res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+                                }
+
                               }
 
 
@@ -144,6 +158,44 @@ app.post('/food-analysis', function (req, res) {
 app.get('/uploaded_img/:id', function (req, res) {
   res.set('Content-Type', 'application/jpeg');
   res.sendFile(__dirname + "/uploaded_data/" +req.param('id'));
+});
+
+// UPC product scans
+app.post('/upc-analysis', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  
+  if (req.body.upc) {
+    var upcData = {
+      code: req.body.upc,
+      appId: process.env.NUTRITION_APP_ID,
+      appKey: process.env.NUTRITION_API_KEY
+    };
+
+    request({
+        uri: "https://api.nutritionix.com/v1_1/item?upc="+ encodeURIComponent(upcData.code) +"&appId="+ encodeURIComponent(upcData.appId) +"&appKey="+encodeURIComponent(upcData.appKey),
+        method: 'GET'
+      }, function (nutriErr, nutriRes, nutriBody) {
+        if (nutriErr) {
+          res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+        } else {
+          var parsedData = JSON.parse(nutriBody);
+          if (parsedData.max_score > 1) {
+            var relevantNutrition = parsedData;
+
+            var easyDisplayName = toTitleCase((JSON.parse(resBody).name).split(" ")[0]); // so it looks better on the iphone
+            console.log("EVERYTHING WORKED".green);
+            res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
+
+
+
+          } else {
+            res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+          }
+
+        }
+
+    }); // end nutritoinix api
+  }
 });
 
 
@@ -215,3 +267,9 @@ generatePushID = (function() {
     return id;
   };
 })();
+
+
+function toTitleCase(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
