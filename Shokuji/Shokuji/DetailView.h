@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
 
-@interface DetailView : UIViewController
+@interface DetailView : UIViewController<UIGestureRecognizerDelegate>
+
+-(void) setParent:(ViewController*) vc;
 
 @end

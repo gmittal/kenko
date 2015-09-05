@@ -11,6 +11,8 @@
 
 @interface ViewController : UIViewController
 
+-(void) reload;
+
 
 @end
 

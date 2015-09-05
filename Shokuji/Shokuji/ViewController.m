@@ -20,6 +20,8 @@
 {
     AVCaptureStillImageOutput* stillImageOutput;
     UIImageView* capturedView;
+    UIButton* capture;
+    UILabel* label;
 }
 
 #define dWidth self.view.frame.size.width
@@ -40,11 +42,13 @@
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
     [session addInput:input];
     AVCaptureVideoPreviewLayer *newCaptureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
-    newCaptureVideoPreviewLayer.frame = self.view.bounds;
+    newCaptureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    newCaptureVideoPreviewLayer.frame = CGRectMake(0, 0, dWidth, dHeight);
+//    newCaptureVideoPreviewLayer.la
     [self.view.layer addSublayer:newCaptureVideoPreviewLayer];
     [session startRunning];
     
-    capturedView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    capturedView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, dWidth, dHeight)];
 //    capturedView.image = image;
     [self.view addSubview:capturedView];
 
@@ -74,14 +78,14 @@
     
     float width = 75;
     float height = 75;
-    UIButton* capture = [[UIButton alloc] initWithFrame:CGRectMake(dWidth/2 - (width/2), dHeight - height*1.3, width, height)];
+    capture = [[UIButton alloc] initWithFrame:CGRectMake(dWidth/2 - (width/2), dHeight - height*1.3, width, height)];
     capture.layer.cornerRadius = 75/2.0;
     capture.layer.borderColor = [[UIColor whiteColor] CGColor];
     capture.layer.borderWidth= 1;
     
     capture.backgroundColor = [UIColor clearColor];
     
-    UILabel* label = [[UILabel alloc] initWithFrame:capture.frame];
+    label = [[UILabel alloc] initWithFrame:capture.frame];
     label.textColor = [UIColor whiteColor];
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:16.0f];
@@ -131,6 +135,8 @@
          UIImage *image = [[UIImage alloc] initWithData:imageData];
          
          capturedView.image = image;
+         label.layer.opacity = 0;
+         capture.layer.opacity = 0;
          
          
          NSData *imageData2 = UIImageJPEGRepresentation(image, 1.0);
@@ -162,6 +168,14 @@
 }
 
 
+-(void) reload
+{
+    capturedView.image = NULL;
+    label.layer.opacity = 1;
+    capture.layer.opacity = 1;
+}
+
+
 -(void) flashScreen {
     UIView* v = [[UIView alloc] initWithFrame: CGRectMake(0, 0, dWidth, dHeight)];
     [self.view addSubview: v];
@@ -178,6 +192,7 @@
 -(void) detailScreen
 {
     DetailView* dv = [[DetailView alloc] init];
+    [dv setParent:self];
     dv.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     [self presentViewController:dv animated:NO completion:^{}];

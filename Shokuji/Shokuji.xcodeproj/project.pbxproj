@@ -15,6 +15,7 @@
 		0A61A2E51B9A73E0009A585B /* ShokujiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2E41B9A73E0009A585B /* ShokujiTests.m */; };
 		0A61A2F01B9A73E0009A585B /* ShokujiUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2EF1B9A73E0009A585B /* ShokujiUITests.m */; };
 		0A61A2FE1B9A79A4009A585B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A61A2FD1B9A79A4009A585B /* Assets.xcassets */; };
+		FA3F81A6E6CBC00D1C31FC10 /* libPods-Shokuji.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C15B439E847E773E7436BD65 /* libPods-Shokuji.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,9 @@
 		0A61A2EF1B9A73E0009A585B /* ShokujiUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShokujiUITests.m; sourceTree = "<group>"; };
 		0A61A2F11B9A73E0009A585B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A61A2FD1B9A79A4009A585B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7A65E1919F165D4D5E56EF44 /* Pods-Shokuji.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shokuji.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Shokuji/Pods-Shokuji.debug.xcconfig"; sourceTree = "<group>"; };
+		C15B439E847E773E7436BD65 /* libPods-Shokuji.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Shokuji.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E99C477CAF8F59A5B772EF89 /* Pods-Shokuji.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shokuji.release.xcconfig"; path = "Pods/Target Support Files/Pods-Shokuji/Pods-Shokuji.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3F81A6E6CBC00D1C31FC10 /* libPods-Shokuji.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +91,8 @@
 				0A61A2E31B9A73E0009A585B /* ShokujiTests */,
 				0A61A2EE1B9A73E0009A585B /* ShokujiUITests */,
 				0A61A2C81B9A73E0009A585B /* Products */,
+				9F67189C823017A6D130B07F /* Pods */,
+				A46550E7320DF79730E67727 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -142,6 +149,23 @@
 			path = ShokujiUITests;
 			sourceTree = "<group>";
 		};
+		9F67189C823017A6D130B07F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7A65E1919F165D4D5E56EF44 /* Pods-Shokuji.debug.xcconfig */,
+				E99C477CAF8F59A5B772EF89 /* Pods-Shokuji.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A46550E7320DF79730E67727 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C15B439E847E773E7436BD65 /* libPods-Shokuji.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -149,9 +173,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A61A2F41B9A73E0009A585B /* Build configuration list for PBXNativeTarget "Shokuji" */;
 			buildPhases = (
+				3667CBF336F2EFED6876770A /* Check Pods Manifest.lock */,
 				0A61A2C31B9A73DF009A585B /* Sources */,
 				0A61A2C41B9A73DF009A585B /* Frameworks */,
 				0A61A2C51B9A73DF009A585B /* Resources */,
+				5C0B14C600210BCD706586FE /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -265,6 +291,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3667CBF336F2EFED6876770A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		5C0B14C600210BCD706586FE /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Shokuji/Pods-Shokuji-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0A61A2C31B9A73DF009A585B /* Sources */ = {
@@ -403,6 +462,7 @@
 		};
 		0A61A2F51B9A73E0009A585B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A65E1919F165D4D5E56EF44 /* Pods-Shokuji.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -416,6 +476,7 @@
 		};
 		0A61A2F61B9A73E0009A585B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E99C477CAF8F59A5B772EF89 /* Pods-Shokuji.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
