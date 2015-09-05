@@ -3,9 +3,7 @@ PennApps Fall 2015 hack.
 
 ### Todo:
  - **Server**:
-    - Integrate Visual Search API
-    - Find Health Information Data and Return It
-    - Detect Barcodes (if not food), then get Product ID and Search for it
+    - Detect Barcodes (if not food), then get Product ID and Search for it (not super important, but might be nice if there's time)
  - **iOS**:
     - Kevin, this is you
 
