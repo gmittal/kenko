@@ -9,6 +9,7 @@
 #import "DetailView.h"
 #import "ViewController.h"
 #import "BALoadingView.h"
+#import <HealthKit/HealthKit.h>
 
 @interface DetailView ()
 
@@ -151,7 +152,7 @@
     
     if (recognizer.state == UIGestureRecognizerStateEnded)
     {
-        if(vel.x < 200 && vel.x > -200)
+        if(vel.x < 100 && vel.x > -100)
         {
             [UIView animateWithDuration:0.6 animations:^{
                 self.view.frame = CGRectMake(0, 0, dWidth, dHeight);
@@ -162,7 +163,7 @@
                 popup.layer.opacity = 1;
             }];
         }
-        if(vel.x > 200)
+        if(vel.x > 100)
         {
             [UIView animateWithDuration:0.6 animations:^{
                 self.view.frame = CGRectMake(320, 0, dWidth, dHeight);
@@ -179,6 +180,8 @@
 -(void) giveData:(NSData *)data
 {
     NSLog(@"callback");
+    
+    NSDate   *now = [NSDate date];
     
     [loadingView removeFromSuperview];
     [loadLabel removeFromSuperview];
@@ -266,8 +269,6 @@
         sodium.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:15];
         [scroll addSubview:sodium];
         
-        
-        
         UILabel* carb = [[UILabel alloc] initWithFrame:CGRectMake(10 + dWidth/2,margin+55, dWidth - 35, 20)];
         carb.text = [NSString stringWithFormat:@"Total Carbs: %@",json[@"result"][@"data"][@"fields"][@"nf_total_carbohydrate"]];
         carb.textAlignment = NSTextAlignmentLeft;
@@ -334,6 +335,56 @@
         [scroll addSubview:ing];
         
         
+        
+        
+        
+        HKHealthStore *healthStore = [[HKHealthStore alloc] init];
+        
+        
+        float sugarcount = [json[@"result"][@"data"][@"fields"][@"nf_sugars"] floatValue];
+        float calciumcount = [json[@"result"][@"data"][@"fields"][@"nf_calcium"] floatValue];
+        float carbcount = [json[@"result"][@"data"][@"fields"][@"nf_total_carbohydrate"] floatValue];
+        float proteincount = [json[@"result"][@"data"][@"fields"][@"nf_protein"] floatValue];
+        float fatcount = [json[@"result"][@"data"][@"fields"][@"nf_total_fat"] floatValue];
+        float sodiumcount = [json[@"result"][@"data"][@"fields"][@"nf_sugars"] floatValue];
+        float cholesterolcount = [json[@"result"][@"data"][@"fields"][@"nf_cholesterol"] floatValue];
+
+        [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySugar]
+                                                                quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:sugarcount]
+                                                               startDate:now
+                                                                 endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCarbohydrates]
+                                                                quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:carbcount]
+                                                               startDate:now
+                                                                 endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCholesterol]
+                                                                quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:cholesterolcount]
+                                                               startDate:now
+                                                                 endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein]
+                                                                quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:proteincount]
+                                                               startDate:now
+                                                                 endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryFatTotal]
+                                                                quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:fatcount]
+                                                               startDate:now
+                                                                 endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCalcium]
+                                                                quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:calciumcount]
+                                                               startDate:now
+                                                                 endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySodium]
+                                                                quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:sodiumcount]
+                                                               startDate:now
+                                                                 endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        
+        
+        
+        
+        
+        
+        
+        
         UILabel* allergies = [[UILabel alloc] initWithFrame:CGRectMake(100,margin+165, dWidth - 110, 20)];
         allergies.text = [NSString stringWithFormat:@"%@",json[@"result"][@"data"][@"fields"][@"nf_ingredient_statement"]];
             if([allergies.text isEqualToString:@"0"])
@@ -347,6 +398,38 @@
         
         NSLog(@"function over");
         
+    }
+    else if(json[@"Scan_Error"] != NULL)
+    {
+        UILabel* sry = [[UILabel alloc] initWithFrame:CGRectMake(10,margin+35, dWidth - 20, 70)];
+        sry.text = @"Uh oh.";
+        sry.textAlignment = NSTextAlignmentCenter;
+        sry.textColor = [UIColor whiteColor];
+        sry.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:60];
+        [scroll addSubview:sry];
+        
+        UILabel* detail = [[UILabel alloc] initWithFrame:CGRectMake(60,margin+90, dWidth - 120, 100)];
+        detail.text = json[@"Scan_Error"];
+        detail.textAlignment = NSTextAlignmentCenter;
+        detail.textColor = [UIColor whiteColor];
+        detail.numberOfLines = 3;
+        detail.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
+        [scroll addSubview:detail];
+        
+        float sidem = 100;
+        UIButton* retry = [[UIButton alloc] initWithFrame:CGRectMake(sidem, margin+200, dWidth - sidem*2, 40)];
+        retry.layer.cornerRadius = 20;
+        retry.backgroundColor = [UIColor whiteColor];
+        [scroll addSubview:retry];
+        
+        UILabel* desc = [[UILabel alloc] initWithFrame:retry.frame];
+        desc.text = @"Try Again";
+        desc.textAlignment = NSTextAlignmentCenter;
+        desc.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.50];
+        //        desc.numberOfLines = 3;
+        desc.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
+        [scroll addSubview:desc];
+        [retry addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     }
     else
     {

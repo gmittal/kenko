@@ -12,6 +12,8 @@
 		0A1CCCCC1B9B265D008B131A /* RobotoCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCCA1B9B2620008B131A /* RobotoCondensed-Light.ttf */; };
 		0A1CCCCE1B9B2B99008B131A /* camera-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CCCCD1B9B2B99008B131A /* camera-button.png */; };
 		0A1CCCD01B9B5380008B131A /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1CCCCF1B9B5380008B131A /* MobileCoreServices.framework */; };
+		0A1CCCD21B9B842E008B131A /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A1CCCD11B9B842E008B131A /* HealthKit.framework */; };
+		0A1CCCD61B9B95B2008B131A /* News.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1CCCD51B9B95B2008B131A /* News.m */; };
 		0A5DB6F11B9A8E3300B78CA5 /* DetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */; };
 		0A61A2CC1B9A73E0009A585B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2CB1B9A73E0009A585B /* main.m */; };
 		0A61A2CF1B9A73E0009A585B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2CE1B9A73E0009A585B /* AppDelegate.m */; };
@@ -47,6 +49,10 @@
 		0A1CCCCA1B9B2620008B131A /* RobotoCondensed-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoCondensed-Light.ttf"; sourceTree = "<group>"; };
 		0A1CCCCD1B9B2B99008B131A /* camera-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-button.png"; sourceTree = "<group>"; };
 		0A1CCCCF1B9B5380008B131A /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		0A1CCCD11B9B842E008B131A /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		0A1CCCD31B9B842E008B131A /* Shokuji.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Shokuji.entitlements; sourceTree = "<group>"; };
+		0A1CCCD41B9B95B2008B131A /* News.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = News.h; sourceTree = "<group>"; };
+		0A1CCCD51B9B95B2008B131A /* News.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = News.m; sourceTree = "<group>"; };
 		0A5DB6EF1B9A8E3300B78CA5 /* DetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailView.h; sourceTree = "<group>"; };
 		0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailView.m; sourceTree = "<group>"; };
 		0A61A2C71B9A73E0009A585B /* Shokuji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shokuji.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A1CCCD21B9B842E008B131A /* HealthKit.framework in Frameworks */,
 				0A1CCCD01B9B5380008B131A /* MobileCoreServices.framework in Frameworks */,
 				FA3F81A6E6CBC00D1C31FC10 /* libPods-Shokuji.a in Frameworks */,
 			);
@@ -121,6 +128,7 @@
 		0A61A2C91B9A73E0009A585B /* Shokuji */ = {
 			isa = PBXGroup;
 			children = (
+				0A1CCCD31B9B842E008B131A /* Shokuji.entitlements */,
 				0A61A2CD1B9A73E0009A585B /* AppDelegate.h */,
 				0A61A2CE1B9A73E0009A585B /* AppDelegate.m */,
 				0A61A2D01B9A73E0009A585B /* ViewController.h */,
@@ -129,6 +137,8 @@
 				0A61A2D31B9A73E0009A585B /* Main.storyboard */,
 				0A5DB6EF1B9A8E3300B78CA5 /* DetailView.h */,
 				0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */,
+				0A1CCCD41B9B95B2008B131A /* News.h */,
+				0A1CCCD51B9B95B2008B131A /* News.m */,
 				0A61A2DB1B9A73E0009A585B /* Info.plist */,
 				0A1CCCCD1B9B2B99008B131A /* camera-button.png */,
 				0A1CCCC61B9B261B008B131A /* Title.h */,
@@ -178,6 +188,7 @@
 		A46550E7320DF79730E67727 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0A1CCCD11B9B842E008B131A /* HealthKit.framework */,
 				0A1CCCCF1B9B5380008B131A /* MobileCoreServices.framework */,
 				C15B439E847E773E7436BD65 /* libPods-Shokuji.a */,
 			);
@@ -253,6 +264,12 @@
 				TargetAttributes = {
 					0A61A2C61B9A73DF009A585B = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = EHP752TB4K;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 					0A61A2DF1B9A73E0009A585B = {
 						CreatedOnToolsVersion = 7.0;
@@ -353,6 +370,7 @@
 			files = (
 				0A61A2D21B9A73E0009A585B /* ViewController.m in Sources */,
 				0A5DB6F11B9A8E3300B78CA5 /* DetailView.m in Sources */,
+				0A1CCCD61B9B95B2008B131A /* News.m in Sources */,
 				0A61A2CF1B9A73E0009A585B /* AppDelegate.m in Sources */,
 				0A61A2CC1B9A73E0009A585B /* main.m in Sources */,
 				0A1CCCC81B9B261B008B131A /* Title.m in Sources */,
@@ -488,11 +506,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Shokuji/Shokuji.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Shokuji/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = kevinfrans.Shokuji;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -502,11 +524,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Shokuji/Shokuji.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Shokuji/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = kevinfrans.Shokuji;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

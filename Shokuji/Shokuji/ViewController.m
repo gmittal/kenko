@@ -11,7 +11,7 @@
 #import "ZXingObjC.h"
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/CGImageProperties.h>
-
+#import <HealthKit/HealthKit.h>
 
 @interface ViewController ()
 
@@ -116,6 +116,44 @@
     [self.view addSubview:capture];
     
     [capture addTarget:self action:@selector(capture) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    HKHealthStore *healthStore = [[HKHealthStore alloc] init];
+    
+    // Share body mass, height and body mass index
+    NSSet *shareObjectTypes = [NSSet setWithObjects:
+                               [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCalcium],
+                               [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCarbohydrates],
+                               [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCholesterol],
+                               [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryFatTotal],
+                               [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein],
+                               [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySodium],
+                               [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySugar],
+                               nil];
+    
+    // Read date of birth, biological sex and step count
+    NSSet *readObjectTypes  = [NSSet setWithObjects:
+                               [HKObjectType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierDateOfBirth],
+                               [HKObjectType characteristicTypeForIdentifier:HKCharacteristicTypeIdentifierBiologicalSex],
+                               [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount],
+                               nil];
+    
+    // Request access
+    [healthStore requestAuthorizationToShareTypes:shareObjectTypes
+                                        readTypes:readObjectTypes
+                                       completion:^(BOOL success, NSError *error) {
+                                           
+                                           if(success == YES)
+                                           {
+                                               // ...
+                                           }
+                                           else
+                                           {
+                                               // Determine if it was an error or if the
+                                               // user just canceld the authorization request
+                                           }
+                                           
+                                       }];
 }
 
 
