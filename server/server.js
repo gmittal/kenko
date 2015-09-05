@@ -125,7 +125,7 @@ app.post('/food-analysis', function (req, res) {
                               } else {
                                 var parsedData = JSON.parse(nutriBody);
                                 console.log(("NUTRITIONAL RELEVANCE SCORE: " + parsedData.max_score).magenta);
-                                if (parsedData.max_score > 0.68) {
+                                if (parsedData.max_score > 0.75) {
                                   var relevantNutrition = parsedData.hits[0];
                                   // console.log(relevantNutrition);
                                   console.log(relevantNutrition.fields.item_name);
