@@ -10,6 +10,6 @@
 #import <FSMediaPicker/FSMediaPicker.h>
 
 
-@interface Title : UIViewController<FSMediaPickerDelegate>
+@interface Title : UIViewController<UIImagePickerControllerDelegate>
 
 @end

@@ -19,6 +19,7 @@
 {
     UIButton* button1;
     UIButton* button2;
+    UIImagePickerController* imagePicker;
 }
 
 - (void)viewDidLoad {
@@ -106,22 +107,19 @@
 
 -(void) choosePhoto
 {
-    FSMediaPicker *picker = [[FSMediaPicker alloc] init];
-    picker.delegate = self;
-//    picker.
-    [picker showFromView:self.view];
+    imagePicker = [[UIImagePickerController alloc] init];
+    [imagePicker setDelegate:self];
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     
-    
+    [self presentViewController:imagePicker animated:YES completion:nil];
 
 }
 
-
-- (void)mediaPicker:(FSMediaPicker *)mediaPicker didFinishWithMediaInfo:(NSDictionary *)mediaInfo
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
-    NSLog(@"pick");
-    
-    NSData *imageData2 = UIImageJPEGRepresentation(mediaInfo.editedImage, 1.0);
+    UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+    NSData *imageData2 = UIImageJPEGRepresentation(selectedImage, 1.0);
     NSString *encodedString = [imageData2 base64Encoding];
     
     
@@ -141,16 +139,26 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
     
-    
+    [imagePicker dismissModalViewControllerAnimated:YES];
     
     DetailView* dv = [[DetailView alloc] init];
-    [dv setParent:self];
+//    [dv setParent:self];
     dv.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     [self presentViewController:dv animated:NO completion:^{}];
     
     [dv sendRequest:request];
-    [dv setImage:mediaInfo.editedImage];
+    [dv setImage:selectedImage];
+    
+}
+
+
+- (void)mediaPicker:(FSMediaPicker *)mediaPicker didFinishWithMediaInfo:(NSDictionary *)mediaInfo
+{
+    
+    NSLog(@"pick");
+    
+    
 //    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
