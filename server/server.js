@@ -134,11 +134,15 @@ app.post('/food-analysis', function (req, res) {
                                   console.log("EVERYTHING WORKED".green);
                                   console.log(Math.max( Math.round(parsedData.max_score * 10) / 10, 2.8 ).toFixed(2));
 
+                                  console.log(relevantNutrition.fields["nf_ingredient_statement"]);
+
                                   for (var key in relevantNutrition.fields) {
+
                                     if (key !== "item_name") {
                                       if (key !== "nf_calories") {
                                         if (key !== "nf_serving_size_qty") {
                                           if (key !== "nf_serving_size_unit") {
+
                                             if ((key.indexOf("allergen") > -1) == false) {
                                                   if (relevantNutrition.fields[key] == null) {
                                                     relevantNutrition.fields[key] = "0";
