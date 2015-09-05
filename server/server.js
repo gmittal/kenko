@@ -161,7 +161,7 @@ app.post('/food-analysis', function (req, res) {
 
                                   }
 
-                                  res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "confidence": Math.max( Math.round(parsedData.max_score * 10) / 10, 2.8 ).toFixed(2), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
+                                  res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "confidence": Math.max( Math.round(parsedData.max_score * 10) / 10).toFixed(2), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
 
 
 
