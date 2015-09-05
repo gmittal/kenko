@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var colors = require('colors');
 var fs = require('fs');
 var os = require('os');
+var prettyjson = require('prettyjson');
 var querystring = require('querystring');
 var request = require('request');
 
@@ -36,7 +37,7 @@ app.post('/food-analysis', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
 
   if (req.body.image) {
-    console.log(req.body.image);
+    // console.log((req.body.image).grey);
 
     var imageID = generatePushID(); // generate a unique token for each image
 
@@ -65,7 +66,7 @@ app.post('/food-analysis', function (req, res) {
             uri: 'https://api.cloudsightapi.com/image_requests',
             body: formData,
             method: 'POST'
-          }, function (err, res, body) {
+          }, function (err, resPost, body) {
             //it works!
             if (err) {
               res.send({"Error": "There was an error from images-request"})
@@ -80,18 +81,77 @@ app.post('/food-analysis', function (req, res) {
                   request({url: "https://api.cloudsightapi.com/image_responses/"+resToken, headers: {'Authorization': 'CloudSight '+ process.env.CLOUDSIGHT_KEY}}, function (resError, resResponse, resBody) {
                       if (JSON.parse(resBody).status == "not completed") {
                         loopResponseCloud();
-                      } else {
+                      } else if (JSON.parse(resBody).status == "skipped") {
+                        res.send({"Error": "Error reading the photo. Please try again."});
+                      } else if (JSON.parse(resBody).status == "completed") { // if the image recognition occurred, start finding nutritional data
+
                         console.log(resBody);
-                        if (typeof resBody.name !== "undefined") {
+
+                        if (typeof JSON.parse(resBody).name !== "undefined") {
                           console.log((JSON.parse(resBody).name).green);
+
+                          // if ((JSON.parse(resBody).name).split(" ")[0] == "barcode") {
+                          //
+                          //   var chunks = (JSON.parse(resBody).name).split(" ");
+                          //   for (var j = 0; j < chunks.length; j++) {
+                          //     if ((chunks[j] > 3) && (isNaN(chunks[j]) == false)) { // we know its a UPC
+                          //       console.log("WE FOUND UPC " + chunks[j]);
+                          //     }
+                          //   }
+                          // }
+
+                          // get nutritional data
+                          var nutritionalParameters = {
+                            "appId":process.env.NUTRITION_APP_ID,
+                            "appKey":process.env.NUTRITION_API_KEY,
+                            "phrase":JSON.parse(resBody).name,
+                            "fields":"*",
+                            "results":"0:50",
+                            "cal_min":0,
+                            "cal_max":50000
+
+                          };
+
+                          var nutritionData = querystring.stringify(nutritionalParameters);
+
+
+                          request({
+                              uri: 'https://api.nutritionix.com/v1_1/search/'+encodeURIComponent(nutritionalParameters.phrase)+"?results="+encodeURIComponent(nutritionalParameters.results)+"&cal_min="+nutritionalParameters.cal_min+"&cal_max="+nutritionalParameters.cal_max+"&fields="+encodeURIComponent(nutritionalParameters.fields)+"&appId="+nutritionalParameters.appId+"&appKey="+nutritionalParameters.appKey,
+                              body: nutritionData,
+                              method: 'GET'
+                            }, function (nutriErr, nutriRes, nutriBody) {
+                              if (nutriErr) {
+                                res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+                              } else {
+                                var parsedData = JSON.parse(nutriBody);
+                                console.log(("NUTRITIONAL RELEVANCE SCORE: " + parsedData.max_score).magenta);
+                                if (parsedData.max_score > 0.68) {
+                                  var relevantNutrition = parsedData.hits[0];
+                                  // console.log(relevantNutrition);
+                                  console.log(relevantNutrition.fields.item_name);
+
+                                  var easyDisplayName = toTitleCase(relevantNutrition.fields.item_name); // so it looks better on the iphone
+                                  console.log("EVERYTHING WORKED".green);
+                                  res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
+
+
+
+                                } else {
+                                  res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+                                }
+
+                              }
+
+
+
+                          }); // end nutritoinix api
+
                         } else {
                           res.send({"Error": "There was an error."});
                         }
-
-
-
-
                       }
+
+
                   });
                 }
 
@@ -111,6 +171,44 @@ app.post('/food-analysis', function (req, res) {
 app.get('/uploaded_img/:id', function (req, res) {
   res.set('Content-Type', 'application/jpeg');
   res.sendFile(__dirname + "/uploaded_data/" +req.param('id'));
+});
+
+// UPC product scans
+app.post('/upc-analysis', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+
+  if (req.body.upc) {
+    var upcData = {
+      code: req.body.upc,
+      appId: process.env.NUTRITION_APP_ID,
+      appKey: process.env.NUTRITION_API_KEY
+    };
+
+    request({
+        uri: "https://api.nutritionix.com/v1_1/item?upc="+ encodeURIComponent(upcData.code) +"&appId="+ encodeURIComponent(upcData.appId) +"&appKey="+encodeURIComponent(upcData.appKey),
+        method: 'GET'
+      }, function (nutriErr, nutriRes, nutriBody) {
+        if (nutriErr) {
+          res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+        } else {
+          var parsedData = JSON.parse(nutriBody);
+          if (parsedData.max_score > 1) {
+            var relevantNutrition = parsedData;
+
+            var easyDisplayName = toTitleCase((JSON.parse(resBody).name).split(" ")[0]); // so it looks better on the iphone
+            console.log("EVERYTHING WORKED".green);
+            res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
+
+
+
+          } else {
+            res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+          }
+
+        }
+
+    }); // end nutritoinix api
+  }
 });
 
 
@@ -182,3 +280,9 @@ generatePushID = (function() {
     return id;
   };
 })();
+
+
+function toTitleCase(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
