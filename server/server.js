@@ -152,9 +152,14 @@ app.post('/food-analysis', function (req, res) {
                                                     relevantNutrition.fields[key] += "mg";
                                                   } else if (key == "nf_cholesterol") {
                                                     relevantNutrition.fields[key] += "mg";
+                                                  } else if (key == "nf_ingredient_statement") {
+                                                    if (relevantNutrition.fields[key] == null) {
+                                                      relevantNutrition.fields[key] = "No ingredients.";
+                                                    }
                                                   } else {
                                                     relevantNutrition.fields[key] += "g";
                                                   }
+
                                             }
                                           }
                                         }
