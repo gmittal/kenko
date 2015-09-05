@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A5DB6F11B9A8E3300B78CA5 /* DetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */; };
 		0A61A2CC1B9A73E0009A585B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2CB1B9A73E0009A585B /* main.m */; };
 		0A61A2CF1B9A73E0009A585B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2CE1B9A73E0009A585B /* AppDelegate.m */; };
 		0A61A2D21B9A73E0009A585B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2D11B9A73E0009A585B /* ViewController.m */; };
 		0A61A2D51B9A73E0009A585B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A61A2D31B9A73E0009A585B /* Main.storyboard */; };
-		0A61A2D71B9A73E0009A585B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A61A2D61B9A73E0009A585B /* Assets.xcassets */; };
 		0A61A2E51B9A73E0009A585B /* ShokujiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2E41B9A73E0009A585B /* ShokujiTests.m */; };
 		0A61A2F01B9A73E0009A585B /* ShokujiUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A61A2EF1B9A73E0009A585B /* ShokujiUITests.m */; };
+		0A61A2FE1B9A79A4009A585B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A61A2FD1B9A79A4009A585B /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A5DB6EF1B9A8E3300B78CA5 /* DetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailView.h; sourceTree = "<group>"; };
+		0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailView.m; sourceTree = "<group>"; };
 		0A61A2C71B9A73E0009A585B /* Shokuji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shokuji.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A61A2CB1B9A73E0009A585B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0A61A2CD1B9A73E0009A585B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -41,7 +44,6 @@
 		0A61A2D01B9A73E0009A585B /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		0A61A2D11B9A73E0009A585B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		0A61A2D41B9A73E0009A585B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		0A61A2D61B9A73E0009A585B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A61A2DB1B9A73E0009A585B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A61A2E01B9A73E0009A585B /* ShokujiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShokujiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A61A2E41B9A73E0009A585B /* ShokujiTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShokujiTests.m; sourceTree = "<group>"; };
@@ -49,6 +51,7 @@
 		0A61A2EB1B9A73E0009A585B /* ShokujiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShokujiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A61A2EF1B9A73E0009A585B /* ShokujiUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShokujiUITests.m; sourceTree = "<group>"; };
 		0A61A2F11B9A73E0009A585B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A61A2FD1B9A79A4009A585B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +106,10 @@
 				0A61A2CE1B9A73E0009A585B /* AppDelegate.m */,
 				0A61A2D01B9A73E0009A585B /* ViewController.h */,
 				0A61A2D11B9A73E0009A585B /* ViewController.m */,
+				0A61A2FD1B9A79A4009A585B /* Assets.xcassets */,
 				0A61A2D31B9A73E0009A585B /* Main.storyboard */,
-				0A61A2D61B9A73E0009A585B /* Assets.xcassets */,
+				0A5DB6EF1B9A8E3300B78CA5 /* DetailView.h */,
+				0A5DB6F01B9A8E3300B78CA5 /* DetailView.m */,
 				0A61A2DB1B9A73E0009A585B /* Info.plist */,
 				0A61A2CA1B9A73E0009A585B /* Supporting Files */,
 			);
@@ -240,7 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A61A2D71B9A73E0009A585B /* Assets.xcassets in Resources */,
+				0A61A2FE1B9A79A4009A585B /* Assets.xcassets in Resources */,
 				0A61A2D51B9A73E0009A585B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A61A2D21B9A73E0009A585B /* ViewController.m in Sources */,
+				0A5DB6F11B9A8E3300B78CA5 /* DetailView.m in Sources */,
 				0A61A2CF1B9A73E0009A585B /* AppDelegate.m in Sources */,
 				0A61A2CC1B9A73E0009A585B /* main.m in Sources */,
 			);
@@ -399,6 +405,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Shokuji/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -411,6 +418,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Shokuji/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -486,6 +494,7 @@
 				0A61A2F61B9A73E0009A585B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0A61A2F71B9A73E0009A585B /* Build configuration list for PBXNativeTarget "ShokujiTests" */ = {
 			isa = XCConfigurationList;
@@ -494,6 +503,7 @@
 				0A61A2F91B9A73E0009A585B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0A61A2FA1B9A73E0009A585B /* Build configuration list for PBXNativeTarget "ShokujiUITests" */ = {
 			isa = XCConfigurationList;
@@ -502,6 +512,7 @@
 				0A61A2FC1B9A73E0009A585B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

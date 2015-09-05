@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  DetailView.h
 //  Shokuji
 //
 //  Created by Kevin Frans on 9/4/15.
@@ -8,9 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
-@interface ViewController : UIViewController
-
+@interface DetailView : UIViewController
 
 @end
-
