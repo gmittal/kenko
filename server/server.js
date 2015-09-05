@@ -121,7 +121,7 @@ app.post('/food-analysis', function (req, res) {
                               method: 'GET'
                             }, function (nutriErr, nutriRes, nutriBody) {
                               if (nutriErr) {
-                                res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+                                res.send({"Scan_Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
                               } else {
                                 var parsedData = JSON.parse(nutriBody);
                                 console.log(("NUTRITIONAL RELEVANCE SCORE: " + parsedData.max_score).magenta);
@@ -170,12 +170,13 @@ app.post('/food-analysis', function (req, res) {
 
                                   }
 
+                                  console.log(relevantNutrition.fields["nf_ingredient_statement"]);
                                   res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "confidence": Math.round(parsedData.max_score * 100)/100, "easy_display_name": easyDisplayName, "data": relevantNutrition}});
 
 
 
                                 } else {
-                                  res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+                                  res.send({"Scan_Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
                                 }
 
                               }
@@ -227,7 +228,7 @@ app.post('/upc-analysis', function (req, res) {
         method: 'GET'
       }, function (nutriErr, nutriRes, nutriBody) {
         if (nutriErr) {
-          res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+          res.send({"Scan_Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
         } else {
           var parsedData = JSON.parse(nutriBody);
           if (parsedData.max_score > 1) {
@@ -240,7 +241,7 @@ app.post('/upc-analysis', function (req, res) {
 
 
           } else {
-            res.send({"Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
+            res.send({"Scan_Error": "There is no nutritional value for a " + JSON.parse(resBody).name});
           }
 
         }
