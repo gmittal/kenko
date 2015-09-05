@@ -1,3 +1,4 @@
 node_modules
 .env
 uploaded_data
+user_cache

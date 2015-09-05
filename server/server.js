@@ -121,7 +121,12 @@ app.post('/food-analysis', function (req, res) {
                               method: 'GET'
                             }, function (nutriErr, nutriRes, nutriBody) {
                               if (nutriErr) {
-                                res.send({"Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"});
+                                var returnedData = {"imageB64":req.body.image, "Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"};
+                                res.send(returnedData);
+                                fs.writeFile(__dirname+"/user_cache/"+generatePushID()+".json", JSON.stringify(returnedData), function(err) {
+                                  if (err) throw err;
+
+                                });
                               } else {
                                 var parsedData = JSON.parse(nutriBody);
                                 console.log(("NUTRITIONAL RELEVANCE SCORE: " + parsedData.max_score).magenta);
@@ -171,16 +176,24 @@ app.post('/food-analysis', function (req, res) {
                                   }
 
                                   console.log(relevantNutrition.fields["nf_ingredient_statement"]);
-                                  res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "confidence": Math.round(parsedData.max_score * 100)/100, "easy_display_name": easyDisplayName, "data": relevantNutrition}});
+                                  var awesomeData = {"imageB64":req.body.image, "result":{"object_name":toTitleCase(JSON.parse(resBody).name), "confidence": Math.round(parsedData.max_score * 100)/100, "easy_display_name": easyDisplayName, "data": relevantNutrition}};
+                                  res.send(awesomeData);
+                                  fs.writeFile(__dirname+"/user_cache/"+generatePushID()+".json", JSON.stringify(awesomeData), function(err) {
+                                    if (err) throw err;
 
+                                  });
 
 
                                 } else {
-                                  res.send({"Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"});
+                                  var returnData = {"imageB64":req.body.image, "Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"};
+                                  res.send(returnData);
+                                  fs.writeFile(__dirname+"/user_cache/"+ generatePushID() +".json", JSON.stringify(returnData), function(err) {
+                                    if (err) throw err;
+
+                                  });
                                 }
 
                               }
-
 
 
                           }); // end nutritoinix api
@@ -212,42 +225,79 @@ app.get('/uploaded_img/:id', function (req, res) {
   res.sendFile(__dirname + "/uploaded_data/" +req.param('id'));
 });
 
+// We really don't care about this for now
 // UPC product scans
-app.post('/upc-analysis', function (req, res) {
+// app.post('/upc-analysis', function (req, res) {
+//   res.setHeader('Content-Type', 'application/json');
+//
+//   if (req.body.upc) {
+//     var upcData = {
+//       code: req.body.upc,
+//       appId: process.env.NUTRITION_APP_ID,
+//       appKey: process.env.NUTRITION_API_KEY
+//     };
+//
+//     request({
+//         uri: "https://api.nutritionix.com/v1_1/item?upc="+ encodeURIComponent(upcData.code) +"&appId="+ encodeURIComponent(upcData.appId) +"&appKey="+encodeURIComponent(upcData.appKey),
+//         method: 'GET'
+//       }, function (nutriErr, nutriRes, nutriBody) {
+//         if (nutriErr) {
+//           res.send({"Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"});
+//         } else {
+//           var parsedData = JSON.parse(nutriBody);
+//           if (parsedData.max_score > 1) {
+//             var relevantNutrition = parsedData;
+//
+//             var easyDisplayName = toTitleCase((JSON.parse(resBody).name).split(" ")[0]); // so it looks better on the iphone
+//             console.log("EVERYTHING WORKED".green);
+//
+//             // send and save the data
+//             var awesomeData = {"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}};
+//             res.send(awesomeData);
+//             fs.writeFile(__dirname+"/user_cache/saved-data.json", awesomeData, function(err) {
+//               if (err) throw err;
+//
+//             });
+//
+//           } else {
+//
+//             res.send({"Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"});
+//           }
+//
+//         }
+//
+//     }); // end nutritoinix api
+//   }
+// });
+
+
+app.get("/saved-user-data", function (req, res) {
   res.setHeader('Content-Type', 'application/json');
 
-  if (req.body.upc) {
-    var upcData = {
-      code: req.body.upc,
-      appId: process.env.NUTRITION_APP_ID,
-      appKey: process.env.NUTRITION_API_KEY
-    };
+  var finalJSON = "[";
+  var savedContents = ls(__dirname+'/user_cache');
+  console.log(savedContents);
 
-    request({
-        uri: "https://api.nutritionix.com/v1_1/item?upc="+ encodeURIComponent(upcData.code) +"&appId="+ encodeURIComponent(upcData.appId) +"&appKey="+encodeURIComponent(upcData.appKey),
-        method: 'GET'
-      }, function (nutriErr, nutriRes, nutriBody) {
-        if (nutriErr) {
-          res.send({"Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"});
-        } else {
-          var parsedData = JSON.parse(nutriBody);
-          if (parsedData.max_score > 1) {
-            var relevantNutrition = parsedData;
+  var fileIndex = 0;
+  loopJSON();
+  function loopJSON() {
+    console.log(savedContents[fileIndex]);
+    fs.readFile(__dirname+"/user_cache/"+savedContents[fileIndex], "utf-8", function (err, data) {
+      if (err) throw err;
 
-            var easyDisplayName = toTitleCase((JSON.parse(resBody).name).split(" ")[0]); // so it looks better on the iphone
-            console.log("EVERYTHING WORKED".green);
-            res.send({"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}});
+      finalJSON += data;
 
+      if (fileIndex < savedContents.length-1) {
+        fileIndex++;
+        loopJSON();
+      } else {
+        res.send(finalJSON);
+      }
+    });
 
-
-          } else {
-            res.send({"Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"});
-          }
-
-        }
-
-    }); // end nutritoinix api
   }
+
+  // res.send()
 });
 
 
