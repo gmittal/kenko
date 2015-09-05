@@ -90,6 +90,16 @@ app.post('/food-analysis', function (req, res) {
                         if (typeof JSON.parse(resBody).name !== "undefined") {
                           console.log((JSON.parse(resBody).name).green);
 
+                          // if ((JSON.parse(resBody).name).split(" ")[0] == "barcode") {
+                          //
+                          //   var chunks = (JSON.parse(resBody).name).split(" ");
+                          //   for (var j = 0; j < chunks.length; j++) {
+                          //     if ((chunks[j] > 3) && (isNaN(chunks[j]) == false)) { // we know its a UPC
+                          //       console.log("WE FOUND UPC " + chunks[j]);
+                          //     }
+                          //   }
+                          // }
+
                           // get nutritional data
                           var nutritionalParameters = {
                             "appId":process.env.NUTRITION_APP_ID,
@@ -117,7 +127,7 @@ app.post('/food-analysis', function (req, res) {
                                 console.log(("NUTRITIONAL RELEVANCE SCORE: " + parsedData.max_score).magenta);
                                 if (parsedData.max_score > 0.68) {
                                   var relevantNutrition = parsedData.hits[0];
-                                  console.log(relevantNutrition);
+                                  // console.log(relevantNutrition);
                                   console.log(relevantNutrition.fields.item_name);
 
                                   var easyDisplayName = toTitleCase(relevantNutrition.fields.item_name); // so it looks better on the iphone
