@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6362A973CC365A88D58ABCD8"
+               BlueprintIdentifier = "DD9C0B770C9AD605073C7D1D"
                BuildableName = "libPods-Shokuji.a"
                BlueprintName = "Pods-Shokuji"
                ReferencedContainer = "container:Pods.xcodeproj">

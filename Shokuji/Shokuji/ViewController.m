@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "DetailView.h"
+#import "ZXingObjC.h"
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/CGImageProperties.h>
 
@@ -101,6 +102,45 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+
+
+-(BOOL) barcode:(UIImage*) image
+{
+    CGImageRef imageToDecode = image.CGImage;  // Given a CGImage in which we are looking for barcodes
+    
+    ZXLuminanceSource *source = [[ZXCGImageLuminanceSource alloc] initWithCGImage:imageToDecode];
+    ZXBinaryBitmap *bitmap = [ZXBinaryBitmap binaryBitmapWithBinarizer:[ZXHybridBinarizer binarizerWithSource:source]];
+    
+    NSError *error = nil;
+    
+    // There are a number of hints we can give to the reader, including
+    // possible formats, allowed lengths, and the string encoding.
+    ZXDecodeHints *hints = [ZXDecodeHints hints];
+    
+    ZXMultiFormatReader *reader = [ZXMultiFormatReader reader];
+    ZXResult *result = [reader decode:bitmap
+                                hints:hints
+                                error:&error];
+    if (result) {
+        // The coded result as a string. The raw data can be accessed with
+        // result.rawBytes and result.length.
+        NSString *contents = result.text;
+        
+        // The barcode format, such as a QR code or UPC-A
+        ZXBarcodeFormat format = result.barcodeFormat;
+        
+        NSLog(@"barcode");
+        
+        return true;
+    } else {
+        NSLog(@"no code");
+        
+        return false;
+        // Use error to determine why we didn't get a result, such as a barcode
+        // not being found, an invalid checksum, or a format inconsistency.
+    }
+}
+
 -(void) capture
 {
     AVCaptureConnection *videoConnection = nil;
@@ -134,6 +174,9 @@
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *image = [[UIImage alloc] initWithData:imageData];
          
+         if(![self barcode:image])
+         {
+         
          capturedView.image = image;
          label.layer.opacity = 0;
          capture.layer.opacity = 0;
@@ -159,11 +202,29 @@
          [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
          [request setHTTPBody:postData];
          
-         NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-
          
-//         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-         [self flashScreen];
+
+         DetailView* dv = [[DetailView alloc] init];
+         [dv setParent:self];
+         dv.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+         self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+         
+         [dv sendRequest:request];
+         
+         
+         UIView* v = [[UIView alloc] initWithFrame: CGRectMake(0, 0, dWidth, dHeight)];
+         [self.view addSubview: v];
+         v.backgroundColor = [UIColor whiteColor];
+         [UIView animateWithDuration:0.2 delay:0.0 options:
+          UIViewAnimationOptionCurveEaseIn animations:^{
+              v.backgroundColor = [UIColor clearColor];
+          } completion:^ (BOOL completed) {
+              [v removeFromSuperview];
+              [self presentViewController:dv animated:NO completion:^{}];
+          }];
+             
+             
+         }
      }];
 }
 
@@ -177,25 +238,12 @@
 
 
 -(void) flashScreen {
-    UIView* v = [[UIView alloc] initWithFrame: CGRectMake(0, 0, dWidth, dHeight)];
-    [self.view addSubview: v];
-    v.backgroundColor = [UIColor whiteColor];
-    [UIView animateWithDuration:0.2 delay:0.0 options:
-     UIViewAnimationOptionCurveEaseIn animations:^{
-         v.backgroundColor = [UIColor clearColor];
-     } completion:^ (BOOL completed) {
-         [v removeFromSuperview];
-         [self detailScreen];
-     }];
+    
 }
 
 -(void) detailScreen
 {
-    DetailView* dv = [[DetailView alloc] init];
-    [dv setParent:self];
-    dv.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    [self presentViewController:dv animated:NO completion:^{}];
+    
 }
 
 

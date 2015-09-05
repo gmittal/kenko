@@ -12,5 +12,7 @@
 @interface DetailView : UIViewController<UIGestureRecognizerDelegate>
 
 -(void) setParent:(ViewController*) vc;
+-(void) sendRequest:(NSURLRequest*)request;
+
 
 @end
