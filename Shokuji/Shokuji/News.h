@@ -10,6 +10,6 @@
 
 @interface News : UIViewController
 
--(void) setupJson:(NSString*) jsonString;
+-(void) setupJson:(NSDictionary*) json;
 
 @end

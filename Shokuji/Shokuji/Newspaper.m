@@ -25,27 +25,41 @@
 
 -(void) giveJson:(NSString *)json
 {
+    NSLog(@" stting %@",json);
     sjson = json;
     [self load];
 }
 
 -(void) viewDidAppear:(BOOL)animated
 {
-    [self load];
+//    [self load];
 }
 
 -(void) load
 {
+    NSLog(@"SJASON %@",sjson);
     
     NSData *tdata = [sjson dataUsingEncoding:NSUTF8StringEncoding];
-    id parse = [NSJSONSerialization JSONObjectWithData:tdata options:0 error:nil];
     
+    NSLog(@" tdata %@",tdata);
+    
+    NSArray* parse = [NSJSONSerialization JSONObjectWithData:tdata options:0 error:nil];
+    NSLog(@" array : %@",parse);
+    
+//    [parse objectAtIndex:0];
+
     UIScrollView* scroll = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    scroll.contentSize = CGSizeMake(2000, self.view.frame.size.height);
+    scroll.pagingEnabled = YES;
+    scroll.contentSize = CGSizeMake(self.view.frame.size.width * [parse count], self.view.frame.size.height);
     [self.view addSubview:scroll];
-    News* n = [[News alloc] init];
-    [scroll addSubview:n.view];
-    [n setupJson:parse[0]];
+    
+    for(int i = 0; i < [parse count]; i++)
+    {
+        News* n = [[News alloc] init];
+        [scroll addSubview:n.view];
+        n.view.frame = CGRectMake(n.view.frame.size.width*i, 0, n.view.frame.size.width, n.view.frame.size.height);
+        [n setupJson:[parse objectAtIndex:i]];
+    }
     
     UIButton* chevron = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, 50, 50)];
     //    chevron.backgroundColor = [UIColor blueColor];

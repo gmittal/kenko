@@ -23,6 +23,7 @@
     UIImagePickerController* imagePicker;
     NSMutableData *responseData;
     id json;
+    NSString* jsondata;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -30,10 +31,21 @@
     NSLog(@"Succeeded! Received %d bytes of data",[responseData
                                                    length]);
     NSString *txt = [[NSString alloc] initWithData:responseData encoding: NSASCIIStringEncoding];
+    jsondata = txt;
+    if([jsondata isEqualToString:@"No new content."])
+    {
+        
+    }
+    else
+    {
 //    NSLog(@"%@",txt);
     NSData *tdata = [txt dataUsingEncoding:NSUTF8StringEncoding];
     json = [NSJSONSerialization JSONObjectWithData:tdata options:0 error:nil];
-    NSLog(@"%@",json);
+    
+    
+    [self showNews];
+    }
+//    NSLog(@"%@",json);
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -136,9 +148,9 @@
 
 -(void) showNews
 {
-    Newspaper* news = [[Newspaper alloc] init];
-    [self presentViewController:news animated:NO completion:^{}];
-    [news giveJson:json];
+        Newspaper* news = [[Newspaper alloc] init];
+        [self presentViewController:news animated:NO completion:^{}];
+        [news giveJson:jsondata];
 }
 
 

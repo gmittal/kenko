@@ -51,7 +51,7 @@
     [self.view insertSubview:imageView atIndex:0];
 }
 
--(void) setupJson:(NSString*) jsonString
+-(void) setupJson:(NSDictionary*) json
 {
     
     
@@ -115,8 +115,10 @@
     }];
     
     
-    NSData *tdata = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    id json = [NSJSONSerialization JSONObjectWithData:tdata options:0 error:nil];
+    
+    
+//    NSData *tdata = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+//    id json = [NSJSONSerialization JSONObjectWithData:tdata options:0 error:nil];
     
     NSString *str = @"data:image/jpeg;base64,";
     str = [str stringByAppendingString:json[@"imageB64"]];
@@ -124,6 +126,11 @@
     NSData *imageData = [NSData dataWithContentsOfURL:url];
     UIImage *ret = [UIImage imageWithData:imageData];
     [self setImage:ret];
+    
+    if(json[@"result"][@"data"][@"fields"][@"nf_calories"] != NULL)
+    {
+    
+    
     
     UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(10,margin+5, dWidth - 105, 20)];
     title.text = json[@"result"][@"object_name"];
@@ -229,24 +236,25 @@
     [scroll addSubview:protein];
     
     UIButton* order = [[UIButton alloc] initWithFrame:CGRectMake(0, margin+194, dWidth, 50)];
-    order.backgroundColor = [UIColor whiteColor];
+    order.backgroundColor = [UIColor colorWithRed:41/255.0 green:128/255.0 blue:185/255.0 alpha:0.65];
     [scroll addSubview:order];
+    [order addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel* orderlabel = [[UILabel alloc] initWithFrame:order.frame];
     orderlabel.text = @"Order This For Me";
     orderlabel.textAlignment = NSTextAlignmentCenter;
-    orderlabel.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.65];
+    orderlabel.textColor = [UIColor whiteColor];
     orderlabel.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
     [scroll addSubview:orderlabel];
     
     UIButton* health = [[UIButton alloc] initWithFrame:CGRectMake(0, margin+248, dWidth, 50)];
-    health.backgroundColor = [UIColor whiteColor];
+    health.backgroundColor = [UIColor colorWithRed:41/255.0 green:128/255.0 blue:185/255.0 alpha:0.65];
     [scroll addSubview:health];
     
     UILabel* healthLabel = [[UILabel alloc] initWithFrame:health.frame];
     healthLabel.text = @"Save to Health Kit";
     healthLabel.textAlignment = NSTextAlignmentCenter;
-    healthLabel.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.65];
+    healthLabel.textColor = [UIColor whiteColor];
     healthLabel.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
     [scroll addSubview:healthLabel];
     
@@ -275,6 +283,78 @@
     allergies.textColor = [UIColor whiteColor];
     allergies.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:15];
     [scroll addSubview:allergies];
+    }
+    else if(json[@"Scan_Error"] != NULL)
+    {
+        UILabel* sry = [[UILabel alloc] initWithFrame:CGRectMake(10,margin+35, dWidth - 20, 70)];
+        sry.text = @"Uh oh.";
+        sry.textAlignment = NSTextAlignmentCenter;
+        sry.textColor = [UIColor whiteColor];
+        sry.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:60];
+        [scroll addSubview:sry];
+        
+        UILabel* detail = [[UILabel alloc] initWithFrame:CGRectMake(60,margin+90, dWidth - 120, 100)];
+        detail.text = json[@"Scan_Error"];
+        detail.textAlignment = NSTextAlignmentCenter;
+        detail.textColor = [UIColor whiteColor];
+        detail.numberOfLines = 3;
+        detail.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
+        [scroll addSubview:detail];
+        
+        float sidem = 100;
+//        UIButton* retry = [[UIButton alloc] initWithFrame:CGRectMake(sidem, margin+200, dWidth - sidem*2, 40)];
+//        retry.layer.cornerRadius = 20;
+//        retry.backgroundColor = [UIColor whiteColor];
+//        [scroll addSubview:retry];
+        
+//        UILabel* desc = [[UILabel alloc] initWithFrame:retry.frame];
+//        desc.text = @"Try Again";
+//        desc.textAlignment = NSTextAlignmentCenter;
+//        desc.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.50];
+//        //        desc.numberOfLines = 3;
+//        desc.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
+//        [scroll addSubview:desc];
+//        [retry addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    }
+    else
+    {
+        UILabel* sry = [[UILabel alloc] initWithFrame:CGRectMake(10,margin+35, dWidth - 20, 70)];
+        sry.text = @"Sorry.";
+        sry.textAlignment = NSTextAlignmentCenter;
+        sry.textColor = [UIColor whiteColor];
+        sry.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:60];
+        [scroll addSubview:sry];
+        
+        UILabel* detail = [[UILabel alloc] initWithFrame:CGRectMake(60,margin+90, dWidth - 120, 100)];
+        detail.text = @"There was an error processing the image.";
+        detail.textAlignment = NSTextAlignmentCenter;
+        detail.textColor = [UIColor whiteColor];
+        detail.numberOfLines = 3;
+        detail.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
+        [scroll addSubview:detail];
+        
+        float sidem = 100;
+        UIButton* retry = [[UIButton alloc] initWithFrame:CGRectMake(sidem, margin+200, dWidth - sidem*2, 40)];
+        retry.layer.cornerRadius = 20;
+        retry.backgroundColor = [UIColor whiteColor];
+        [scroll addSubview:retry];
+        
+        UILabel* desc = [[UILabel alloc] initWithFrame:retry.frame];
+        desc.text = @"Try Again";
+        desc.textAlignment = NSTextAlignmentCenter;
+        desc.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.50];
+        //        desc.numberOfLines = 3;
+        desc.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
+        [scroll addSubview:desc];
+        [retry addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+}
+
+
+-(void) close
+{
+//    [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
 - (void)didReceiveMemoryWarning {

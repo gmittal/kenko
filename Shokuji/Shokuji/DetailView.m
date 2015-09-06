@@ -63,7 +63,10 @@
 {
     
     
+    NSURL *myURL = [NSURL URLWithString:@"http://507288d1.ngrok.io/saved-user-data"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:myURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60];
     
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
 //    UISwipeGestureRecognizer* swipeUpGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeUpFrom:)];
 //    swipeUpGestureRecognizer.delegate = self;
@@ -315,25 +318,25 @@
         [scroll addSubview:protein];
         
         UIButton* order = [[UIButton alloc] initWithFrame:CGRectMake(0, margin+194, dWidth, 50)];
-        order.backgroundColor = [UIColor whiteColor];
+        order.backgroundColor = [UIColor colorWithRed:41/255.0 green:128/255.0 blue:185/255.0 alpha:0.65];
         [scroll addSubview:order];
         [order addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
         
         UILabel* orderlabel = [[UILabel alloc] initWithFrame:order.frame];
         orderlabel.text = @"Order This For Me";
         orderlabel.textAlignment = NSTextAlignmentCenter;
-        orderlabel.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.65];
+        orderlabel.textColor = [UIColor whiteColor];
         orderlabel.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
         [scroll addSubview:orderlabel];
         
         UIButton* health = [[UIButton alloc] initWithFrame:CGRectMake(0, margin+248, dWidth, 50)];
-        health.backgroundColor = [UIColor whiteColor];
+        health.backgroundColor = [UIColor colorWithRed:41/255.0 green:128/255.0 blue:185/255.0 alpha:0.65];
         [scroll addSubview:health];
         
         UILabel* healthLabel = [[UILabel alloc] initWithFrame:health.frame];
         healthLabel.text = @"Save to Health Kit";
         healthLabel.textAlignment = NSTextAlignmentCenter;
-        healthLabel.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.65];
+        healthLabel.textColor = [UIColor whiteColor];
         healthLabel.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
         [scroll addSubview:healthLabel];
         
@@ -366,6 +369,7 @@
         float fatcount = [json[@"result"][@"data"][@"fields"][@"nf_total_fat"] floatValue];
         float sodiumcount = [json[@"result"][@"data"][@"fields"][@"nf_sugars"] floatValue];
         float cholesterolcount = [json[@"result"][@"data"][@"fields"][@"nf_cholesterol"] floatValue];
+        float caloriecount = [json[@"result"][@"data"][@"fields"][@"nf_calories"] floatValue];
         
         [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySugar]
                                                                 quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:sugarcount]
@@ -391,8 +395,14 @@
                                                                 quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:calciumcount]
                                                                startDate:now
                                                                  endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        
         [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySodium]
                                                                 quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:sodiumcount]
+                                                               startDate:now
+                                                                 endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        
+        [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryEnergyConsumed]
+                                                                quantity:[HKQuantity quantityWithUnit:[HKUnit calorieUnit] doubleValue:caloriecount]
                                                                startDate:now
                                                                  endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
         

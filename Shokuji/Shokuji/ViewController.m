@@ -133,6 +133,8 @@
                                [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCalcium],
                                [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCarbohydrates],
                                [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryCholesterol],
+                               [HKObjectType quantityTypeForIdentifier:
+                                HKQuantityTypeIdentifierDietaryEnergyConsumed],
                                [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryFatTotal],
                                [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietaryProtein],
                                [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySodium],
