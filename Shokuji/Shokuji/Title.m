@@ -10,6 +10,7 @@
 #import "ViewController.h"
 #import "DetailView.h"
 #import <AVFoundation/AVFoundation.h>
+#import "Newspaper.h"
 
 @interface Title ()
 
@@ -20,10 +21,38 @@
     UIButton* button1;
     UIButton* button2;
     UIImagePickerController* imagePicker;
+    NSMutableData *responseData;
+    id json;
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSLog(@"Succeeded! Received %d bytes of data",[responseData
+                                                   length]);
+    NSString *txt = [[NSString alloc] initWithData:responseData encoding: NSASCIIStringEncoding];
+//    NSLog(@"%@",txt);
+    NSData *tdata = [txt dataUsingEncoding:NSUTF8StringEncoding];
+    json = [NSJSONSerialization JSONObjectWithData:tdata options:0 error:nil];
+    NSLog(@"%@",json);
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    responseData = [[NSMutableData alloc] init];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    [responseData appendData:data];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSURL *myURL = [NSURL URLWithString:@"http://507288d1.ngrok.io/saved-user-data"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:myURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60];
+    
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
     AVCaptureSession *session = [[AVCaptureSession alloc] init];
     session.sessionPreset = AVCaptureSessionPresetHigh;
@@ -84,7 +113,7 @@
     label2.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.65];
     label2.text = @"Choose Photo";
     [self.view addSubview:label2];
-    [button2 addTarget:self action:@selector(choosePhoto) forControlEvents:UIControlEventTouchUpInside];
+    [button2 addTarget:self action:@selector(showNews) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -102,6 +131,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self presentViewController:vc animated:NO completion:^{}];
     });
+}
+
+
+-(void) showNews
+{
+    Newspaper* news = [[Newspaper alloc] init];
+    [self presentViewController:news animated:NO completion:^{}];
+    [news giveJson:json];
 }
 
 

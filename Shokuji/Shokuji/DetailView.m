@@ -10,6 +10,7 @@
 #import "ViewController.h"
 #import "BALoadingView.h"
 #import <HealthKit/HealthKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface DetailView ()
 
@@ -31,6 +32,9 @@
     UILabel* loadLabel;
     UILabel* title;
     UIView* tbar;
+    
+    NSString* foodname;
+    NSString* city;
 }
 
 - (void)viewDidLoad {
@@ -59,14 +63,14 @@
 {
     
     
+    
+    
 //    UISwipeGestureRecognizer* swipeUpGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeUpFrom:)];
 //    swipeUpGestureRecognizer.delegate = self;
 //    swipeUpGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     UIPanGestureRecognizer *dragGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragHandler:)];
 //    [self.view addGestureRecognizer:dragGestureRecognizer];
     dragGestureRecognizer.delegate = self;
-    
-    
     
     
     margin = 270;
@@ -181,29 +185,42 @@
 {
     NSLog(@"callback");
     
-    NSDate   *now = [NSDate date];
+   
     
-    [loadingView removeFromSuperview];
-    [loadLabel removeFromSuperview];
+    
     //    scroll.contentSize = CGSizeMake(dWidth, 2000);
     
     NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+    [self setJson:jsonString];
+    
+}
+
+-(void) setJson:(NSString*) jsonString
+{
+    
+    [loadingView removeFromSuperview];
+    [loadLabel removeFromSuperview];
+    
+     NSDate   *now = [NSDate date];
+    
     NSData *tdata = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     id json = [NSJSONSerialization JSONObjectWithData:tdata options:0 error:nil];
-    
+
     if(json[@"result"][@"data"][@"fields"][@"nf_calories"] != NULL)
     {
-    
+        
+        foodname = json[@"result"][@"object_name"];
+        
         UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(10,margin+5, dWidth - 105, 20)];
         title.text = json[@"result"][@"object_name"];
-    //    title.text = @"adjasd asd asdas dasd sad sad as das das dsad";
+        //    title.text = @"adjasd asd asdas dasd sad sad as das das dsad";
         title.textColor = [UIColor whiteColor];
         title.font = [UIFont fontWithName:@"Roboto-Bold" size:20];
-    //    title.numberOfLines = 1;
+        //    title.numberOfLines = 1;
         title.adjustsFontSizeToFitWidth = NO;
         title.lineBreakMode = NSLineBreakByTruncatingTail;
         [scroll addSubview:title];
-    //    [title sizeToFit];
+        //    [title sizeToFit];
         
         UILabel* calories = [[UILabel alloc] initWithFrame:CGRectMake(10,margin+5, dWidth - 20, 20)];
         calories.text = [NSString stringWithFormat:@"%@ Cal",json[@"result"][@"data"][@"fields"][@"nf_calories"]];
@@ -212,7 +229,7 @@
         calories.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
         calories.numberOfLines = 1;
         [scroll addSubview:calories];
-    //    [calories sizeToFit];
+        //    [calories sizeToFit];
         
         UILabel* serving = [[UILabel alloc] initWithFrame:CGRectMake(10,margin+25, dWidth - 20, 20)];
         serving.text = [NSString stringWithFormat:@"Serving Size: %@ %@ (%@)",json[@"result"][@"data"][@"fields"][@"nf_serving_size_qty"],json[@"result"][@"data"][@"fields"][@"nf_serving_size_unit"],json[@"result"][@"data"][@"fields"][@"nf_serving_weight_grams"]];
@@ -300,6 +317,7 @@
         UIButton* order = [[UIButton alloc] initWithFrame:CGRectMake(0, margin+194, dWidth, 50)];
         order.backgroundColor = [UIColor whiteColor];
         [scroll addSubview:order];
+        [order addTarget:self action:@selector(search) forControlEvents:UIControlEventTouchUpInside];
         
         UILabel* orderlabel = [[UILabel alloc] initWithFrame:order.frame];
         orderlabel.text = @"Order This For Me";
@@ -348,7 +366,7 @@
         float fatcount = [json[@"result"][@"data"][@"fields"][@"nf_total_fat"] floatValue];
         float sodiumcount = [json[@"result"][@"data"][@"fields"][@"nf_sugars"] floatValue];
         float cholesterolcount = [json[@"result"][@"data"][@"fields"][@"nf_cholesterol"] floatValue];
-
+        
         [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySugar]
                                                                 quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:sugarcount]
                                                                startDate:now
@@ -387,10 +405,10 @@
         
         UILabel* allergies = [[UILabel alloc] initWithFrame:CGRectMake(100,margin+165, dWidth - 110, 20)];
         allergies.text = [NSString stringWithFormat:@"%@",json[@"result"][@"data"][@"fields"][@"nf_ingredient_statement"]];
-            if([allergies.text isEqualToString:@"0"])
-            {
-                allergies.text = @"None";
-            }
+        if([allergies.text isEqualToString:@"0"])
+        {
+            allergies.text = @"None";
+        }
         allergies.textAlignment = NSTextAlignmentLeft;
         allergies.textColor = [UIColor whiteColor];
         allergies.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:15];
@@ -458,12 +476,23 @@
         desc.text = @"Try Again";
         desc.textAlignment = NSTextAlignmentCenter;
         desc.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.50];
-//        desc.numberOfLines = 3;
+        //        desc.numberOfLines = 3;
         desc.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
         [scroll addSubview:desc];
         [retry addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
-
+        
     }
+    
+}
+
+
+-(void) search
+{
+    NSLog(@"searching");
+    NSString* url = [NSString stringWithFormat:@"http://www.yelp.com/search?find_desc=%@",[foodname stringByReplacingOccurrencesOfString:@" " withString:@"+"]];
+    NSLog(url);
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    
 }
 
 
@@ -493,7 +522,7 @@
 //     UIViewAnimationOptionCurveEaseIn animations:^{
 //         bg.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
 //         popup.frame = CGRectMake(0, margin, dWidth, dHeight-margin);
-//         
+//
 //     } completion:^ (BOOL completed) {
 //         [myParent reload];
 //         [self dismissViewControllerAnimated:NO completion:^{}];

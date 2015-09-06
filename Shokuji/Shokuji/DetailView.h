@@ -13,6 +13,7 @@
 
 -(void) setParent:(ViewController*) vc;
 -(void) setImage:(UIImage*) theimg;
+-(void) setJson:(NSString *)json;
 
 -(void) sendRequest:(NSURLRequest*)request;
 

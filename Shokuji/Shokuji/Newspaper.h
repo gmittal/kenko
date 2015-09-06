@@ -1,5 +1,5 @@
 //
-//  News.h
+//  Newspaper.h
 //  Shokuji
 //
 //  Created by Kevin Frans on 9/5/15.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface News : UIViewController
+@interface Newspaper : UIViewController
 
--(void) setupJson:(NSString*) jsonString;
+-(void) giveJson:(NSString* )json;
 
 @end

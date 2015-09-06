@@ -85,6 +85,14 @@
     gradient2.colors = [NSArray arrayWithObjects:(id)[[[UIColor blackColor] colorWithAlphaComponent:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil];
     [topGrad.layer insertSublayer:gradient2 atIndex:0];
     
+    UIButton* chevron = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, 50, 50)];
+//    chevron.backgroundColor = [UIColor blueColor];
+    [chevron setImage:[UIImage imageNamed:@"chevron-left.png"] forState:UIControlStateNormal];
+//    chevron.imageView.image = [UIImage imageNamed:@"chevron-left.png"];
+    [self.view addSubview:chevron];
+    [chevron addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(0, -10, self.view.frame.size.width, 100)];
     title.font = [UIFont fontWithName:@"Roboto-Bold" size:40];
     title.textAlignment = NSTextAlignmentCenter;
@@ -259,7 +267,7 @@
          NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
          
          NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-         [request setURL:[NSURL URLWithString:@"http://usekenko.co/food-analysis"]];
+         [request setURL:[NSURL URLWithString:@"http://507288d1.ngrok.io/food-analysis"]];
          [request setHTTPMethod:@"POST"];
          [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
          [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
