@@ -30,7 +30,7 @@ var port = 3000;
 var ifaces = os.networkInterfaces();
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.sendFile(__dirname+'/landing/index.html');
 });
 
 app.post('/food-analysis', function (req, res) {
