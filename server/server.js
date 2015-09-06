@@ -274,30 +274,37 @@ app.get('/uploaded_img/:id', function (req, res) {
 app.get("/saved-user-data", function (req, res) {
   res.setHeader('Content-Type', 'application/json');
 
-  var finalJSON = "[";
+  var finalJSON = [];
   var savedContents = ls(__dirname+'/user_cache');
   console.log(savedContents);
 
-  var fileIndex = 0;
-  loopJSON();
-  function loopJSON() {
-    console.log(savedContents[fileIndex]);
-    fs.readFile(__dirname+"/user_cache/"+savedContents[fileIndex], "utf-8", function (err, data) {
-      if (err) throw err;
+  if (savedContents.length > 0) {
+    var fileIndex = 0;
+    loopJSON();
 
-      finalJSON += data;
+    function loopJSON() {
+      console.log(savedContents[fileIndex]);
+      fs.readFile(__dirname+"/user_cache/"+savedContents[fileIndex], "utf-8", function (err, data) {
+        if (err) throw err;
 
-      if (fileIndex < savedContents.length-1) {
-        fileIndex++;
-        loopJSON();
-      } else {
-        res.send(finalJSON);
-      }
-    });
+        finalJSON.push(JSON.parse(data));
+        rm('-rf', __dirname+"/user_cache/"+savedContents[fileIndex]);
 
+        if (fileIndex < savedContents.length-1) {
+          fileIndex++;
+          loopJSON();
+        } else {
+          res.send(JSON.stringify(finalJSON));
+        }
+      });
+
+    }
+  } else {
+    res.setHeader('Content-Type', 'application/text');
+    res.send("No new content.");
   }
 
-  // res.send()
+
 });
 
 
