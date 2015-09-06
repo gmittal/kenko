@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var colors = require('colors');
 var fs = require('fs');
 var os = require('os');
+var path = require('path');
 var prettyjson = require('prettyjson');
 var querystring = require('querystring');
 var request = require('request');
@@ -16,6 +17,7 @@ require('shelljs/global');
 var app = express();
 app.use(bodyParser({limit: '50mb'}));
 app.use(express.static(__dirname + '/uploaded_data'));
+app.use("/", express.static(__dirname + '/landing'));
 app.use(function(req, res, next) { // enable CORS
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -28,11 +30,6 @@ var port = 3000;
 
 // for getting network data
 var ifaces = os.networkInterfaces();
-
-app.get('/', function (req, res) {
-  res.setHeader('Content-Type', 'text/html');
-  res.sendFile(__dirname+'/landing/index.html');
-});
 
 app.post('/food-analysis', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
