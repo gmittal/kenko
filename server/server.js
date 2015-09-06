@@ -30,6 +30,7 @@ var port = 3000;
 var ifaces = os.networkInterfaces();
 
 app.get('/', function (req, res) {
+  res.setHeader('Content-Type', 'application/html');
   res.sendFile(__dirname+'/landing/index.html');
 });
 
