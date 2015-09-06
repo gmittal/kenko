@@ -100,6 +100,10 @@
     title.text = @"kenko";
     [self.view addSubview:title];
     
+    
+    
+    
+    
     UIView* bar = [[UIView alloc] initWithFrame:CGRectMake(100, -10+80, self.view.frame.size.width - 200, 2)];
     bar.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bar];
@@ -214,6 +218,8 @@
 
 -(void) capture
 {
+    [[NSUserDefaults standardUserDefaults] setInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"snap"]+1 forKey:@"snap"];
+    
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in stillImageOutput.connections)
     {
@@ -269,7 +275,7 @@
          NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
          
          NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-         [request setURL:[NSURL URLWithString:@"http://507288d1.ngrok.io/food-analysis"]];
+         [request setURL:[NSURL URLWithString:@"http://usekenko.co/food-analysis"]];
          [request setHTTPMethod:@"POST"];
          [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
          [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];

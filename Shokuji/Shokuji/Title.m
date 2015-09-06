@@ -61,10 +61,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSURL *myURL = [NSURL URLWithString:@"http://507288d1.ngrok.io/saved-user-data"];
+    NSURL *myURL = [NSURL URLWithString:@"http://usekenko.co/saved-user-data"];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:myURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60];
     
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+    
     
     AVCaptureSession *session = [[AVCaptureSession alloc] init];
     session.sessionPreset = AVCaptureSessionPresetHigh;
@@ -100,6 +102,10 @@
     bar.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bar];
     
+    
+    
+    
+    
     button1 = [[UIButton alloc] initWithFrame:CGRectMake(80, margin+110, self.view.frame.size.width - 160, 40)];
     button1.layer.cornerRadius = 20;
     button1.backgroundColor = [UIColor whiteColor];
@@ -125,7 +131,22 @@
     label2.textColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.65];
     label2.text = @"Choose Photo";
     [self.view addSubview:label2];
-    [button2 addTarget:self action:@selector(showNews) forControlEvents:UIControlEventTouchUpInside];
+    [button2 addTarget:self action:@selector(choosePhoto) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel* cal = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height-30, self.view.frame.size.width - 20, 30)];
+    cal.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
+    cal.textAlignment = NSTextAlignmentLeft;
+    cal.textColor = [UIColor whiteColor];
+    cal.text = [NSString stringWithFormat:@"%ld cal",(long)[[NSUserDefaults standardUserDefaults] integerForKey:@"cal"]];
+    [self.view addSubview:cal];
+    
+    UILabel* shots = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height-30, self.view.frame.size.width - 20, 30)];
+    shots.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
+    shots.textAlignment = NSTextAlignmentRight;
+    shots.textColor = [UIColor whiteColor];
+    shots.text = [NSString stringWithFormat:@"%ld snaps",(long)[[NSUserDefaults standardUserDefaults] integerForKey:@"snap"]];
+    [self.view addSubview:shots];
+
 }
 
 - (void)didReceiveMemoryWarning {

@@ -63,10 +63,7 @@
 {
     
     
-    NSURL *myURL = [NSURL URLWithString:@"http://507288d1.ngrok.io/saved-user-data"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:myURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60];
     
-    [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
 //    UISwipeGestureRecognizer* swipeUpGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeUpFrom:)];
 //    swipeUpGestureRecognizer.delegate = self;
@@ -200,6 +197,11 @@
 
 -(void) setJson:(NSString*) jsonString
 {
+    
+    NSURL *myURL = [NSURL URLWithString:@"http://usekenko.co/saved-user-data"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:myURL cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:60];
+    
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
     [loadingView removeFromSuperview];
     [loadLabel removeFromSuperview];
@@ -369,7 +371,7 @@
         float fatcount = [json[@"result"][@"data"][@"fields"][@"nf_total_fat"] floatValue];
         float sodiumcount = [json[@"result"][@"data"][@"fields"][@"nf_sugars"] floatValue];
         float cholesterolcount = [json[@"result"][@"data"][@"fields"][@"nf_cholesterol"] floatValue];
-        float caloriecount = [json[@"result"][@"data"][@"fields"][@"nf_calories"] floatValue];
+        float caloriecount = [json[@"result"][@"data"][@"fields"][@"nf_calories"] floatValue] * 1000;
         
         [healthStore saveObject:[HKQuantitySample quantitySampleWithType:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDietarySugar]
                                                                 quantity:[HKQuantity quantityWithUnit:[HKUnit gramUnit] doubleValue:sugarcount]
@@ -405,6 +407,8 @@
                                                                 quantity:[HKQuantity quantityWithUnit:[HKUnit calorieUnit] doubleValue:caloriecount]
                                                                startDate:now
                                                                  endDate:now] withCompletion:^(BOOL success, NSError *error) {}];
+        
+        [[NSUserDefaults standardUserDefaults] setInteger:[[NSUserDefaults standardUserDefaults] integerForKey:@"cal"]+caloriecount forKey:@"cal"];
         
         
         
