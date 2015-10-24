@@ -278,7 +278,7 @@
 				TargetAttributes = {
 					0A61A2C61B9A73DF009A585B = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = EHP752TB4K;
+						DevelopmentTeam = 8W7785CWB2;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 1;
@@ -530,7 +530,7 @@
 				INFOPLIST_FILE = Shokuji/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kevinfrans.Shokuji;
+				PRODUCT_BUNDLE_IDENTIFIER = kevfrans.Shokuji;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -548,7 +548,7 @@
 				INFOPLIST_FILE = Shokuji/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kevinfrans.Shokuji;
+				PRODUCT_BUNDLE_IDENTIFIER = kevfrans.Shokuji;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
