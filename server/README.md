@@ -1,9 +1,8 @@
-# Kenko (PennApps Fall 2015 Hack)
-**Internally known as しょくじ**
+# Kenko - Server
+**Want to deploy your own Kenko server? You've come to the right place, my friend.**
 
-Take a photo of some food, and gain insight about its nutritious properties.
+Send a base64 string of an image to ```/food-analysis/```, and receive nutritional insight in return.
 
-Kenko is Copyright 2015 Gautam Mittal and Kevin Frans
 
 Note: In order to run the Node.js server you must create a file under the name of `.env` and make sure to add your own API Keys
 
@@ -11,10 +10,10 @@ Note: In order to run the Node.js server you must create a file under the name o
 
 HOSTNAME=<Your hostname>
 CLOUDSIGHT_KEY=<CloudSight API Key>
-NUTRITION_APP_ID=<Nutritionix API ID>
-NUTRITION_API_KEY=<Nutritionix API Key>
 
 ```
+
+Kenko is Copyright 2015 Gautam Mittal and Kevin Frans
 
 Licensed under the **[MIT License] [license]**.
 
