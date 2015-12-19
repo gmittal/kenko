@@ -11,8 +11,6 @@ Note: In order to run the Node.js server you must create a file under the name o
 
 HOSTNAME=<Your hostname>
 CLOUDSIGHT_KEY=<CloudSight API Key>
-NUTRITION_APP_ID=<Nutritionix API ID>
-NUTRITION_API_KEY=<Nutritionix API Key>
 
 ```
 
