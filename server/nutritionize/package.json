@@ -1,0 +1,15 @@
+{
+  "name": "nutritionize",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nutritionize.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cropng": "^0.1.1",
+    "shelljs": "^0.5.3"
+  }
+}
