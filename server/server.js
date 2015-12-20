@@ -1,6 +1,5 @@
 var dotenv = require('dotenv');
 dotenv.load();
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var colors = require('colors');
@@ -10,6 +9,8 @@ var path = require('path');
 var prettyjson = require('prettyjson');
 var querystring = require('querystring');
 var request = require('request');
+
+var port = 3000;
 
 // shell commands
 require('shelljs/global');
@@ -26,8 +27,6 @@ app.use(function(req, res, next) { // enable CORS
 });
 
 
-var port = 3000;
-
 // for getting network data
 var ifaces = os.networkInterfaces();
 
@@ -35,7 +34,6 @@ app.post('/food-analysis', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
 
   if (req.body.image) {
-    // console.log((req.body.image).grey);
 
     var imageID = generatePushID(); // generate a unique token for each image
 
@@ -210,18 +208,54 @@ app.post('/food-analysis', function (req, res) {
           });
 
 
-
-
     });
 
 
   }
-});
+}); // end food-analysis
+
 
 app.get('/uploaded_img/:id', function (req, res) {
   res.set('Content-Type', 'application/jpeg');
   res.sendFile(__dirname + "/uploaded_data/" +req.param('id'));
 });
+
+
+app.get("/saved-user-data", function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+
+  var finalJSON = [];
+  var savedContents = ls(__dirname+'/user_cache');
+  console.log(savedContents);
+
+  if (savedContents.length > 0) {
+    var fileIndex = 0;
+    loopJSON();
+
+    function loopJSON() {
+      console.log(savedContents[fileIndex]);
+      fs.readFile(__dirname+"/user_cache/"+savedContents[fileIndex], "utf-8", function (err, data) {
+        if (err) throw err;
+
+        finalJSON.push(JSON.parse(data));
+        rm('-rf', __dirname+"/user_cache/"+savedContents[fileIndex]);
+
+        if (fileIndex < savedContents.length-1) {
+          fileIndex++;
+          loopJSON();
+        } else {
+          res.send(JSON.stringify(finalJSON));
+        }
+      });
+
+    }
+  } else {
+    res.setHeader('Content-Type', 'application/text');
+    res.send("No new content.");
+  }
+});
+
+
 
 // We really don't care about this for now
 // UPC product scans
@@ -269,98 +303,42 @@ app.get('/uploaded_img/:id', function (req, res) {
 // });
 
 
-app.get("/saved-user-data", function (req, res) {
-  res.setHeader('Content-Type', 'application/json');
-
-  var finalJSON = [];
-  var savedContents = ls(__dirname+'/user_cache');
-  console.log(savedContents);
-
-  if (savedContents.length > 0) {
-    var fileIndex = 0;
-    loopJSON();
-
-    function loopJSON() {
-      console.log(savedContents[fileIndex]);
-      fs.readFile(__dirname+"/user_cache/"+savedContents[fileIndex], "utf-8", function (err, data) {
-        if (err) throw err;
-
-        finalJSON.push(JSON.parse(data));
-        rm('-rf', __dirname+"/user_cache/"+savedContents[fileIndex]);
-
-        if (fileIndex < savedContents.length-1) {
-          fileIndex++;
-          loopJSON();
-        } else {
-          res.send(JSON.stringify(finalJSON));
-        }
-      });
-
-    }
-  } else {
-    res.setHeader('Content-Type', 'application/text');
-    res.send("No new content.");
-  }
 
 
-});
-
-
-// start the server
+// fire up the server
 var server = app.listen(port, function () {
   Object.keys(ifaces).forEach(function (ifname) {
     var alias = 0;
-
     ifaces[ifname].forEach(function (iface) {
       if ('IPv4' !== iface.family || iface.internal !== false) {
-        // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
         return;
       }
-
-      // this interface has only one ipv4 adress
       console.log(("Server running on "+iface.address+":"+port).blue);
-
-
     });
   });
 });
 
 
-// uuid generation
 generatePushID = (function() {
-  // Modeled after base64 web-safe chars, but ordered by ASCII.
   var PUSH_CHARS = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
-
-  // Timestamp of last push, used to prevent local collisions if you push twice in one ms.
   var lastPushTime = 0;
-
-  // We generate 72-bits of randomness which get turned into 12 characters and appended to the
-  // timestamp to prevent collisions with other clients.  We store the last characters we
-  // generated because in the event of a collision, we'll use those same characters except
-  // "incremented" by one.
   var lastRandChars = [];
-
   return function() {
     var now = new Date().getTime();
     var duplicateTime = (now === lastPushTime);
     lastPushTime = now;
-
     var timeStampChars = new Array(8);
     for (var i = 7; i >= 0; i--) {
       timeStampChars[i] = PUSH_CHARS.charAt(now % 64);
-      // NOTE: Can't use << here because javascript will convert to int and lose the upper bits.
       now = Math.floor(now / 64);
     }
     if (now !== 0) throw new Error('We should have converted the entire timestamp.');
-
     var id = timeStampChars.join('');
-
     if (!duplicateTime) {
       for (i = 0; i < 12; i++) {
         lastRandChars[i] = Math.floor(Math.random() * 64);
       }
     } else {
-      // If the timestamp hasn't changed since last push, use the same random number, except incremented by 1.
       for (i = 11; i >= 0 && lastRandChars[i] === 63; i--) {
         lastRandChars[i] = 0;
       }
@@ -374,7 +352,6 @@ generatePushID = (function() {
     return id;
   };
 })();
-
 
 function toTitleCase(str)
 {
