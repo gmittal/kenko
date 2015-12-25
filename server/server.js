@@ -86,16 +86,6 @@ app.post('/food-analysis', function (req, res) {
                         if (typeof JSON.parse(resBody).name !== "undefined") {
                           console.log((JSON.parse(resBody).name).green);
 
-                          // if ((JSON.parse(resBody).name).split(" ")[0] == "barcode") {
-                          //
-                          //   var chunks = (JSON.parse(resBody).name).split(" ");
-                          //   for (var j = 0; j < chunks.length; j++) {
-                          //     if ((chunks[j] > 3) && (isNaN(chunks[j]) == false)) { // we know its a UPC
-                          //       console.log("WE FOUND UPC " + chunks[j]);
-                          //     }
-                          //   }
-                          // }
-
                           // get nutritional data
                           var nutritionalParameters = {
                             "appId":process.env.NUTRITION_APP_ID,
@@ -105,12 +95,9 @@ app.post('/food-analysis', function (req, res) {
                             "results":"0:50",
                             "cal_min":0,
                             "cal_max":50000
-
                           };
 
                           var nutritionData = querystring.stringify(nutritionalParameters);
-
-
                           request({
                               uri: 'https://api.nutritionix.com/v1_1/search/'+encodeURIComponent(nutritionalParameters.phrase)+"?results="+encodeURIComponent(nutritionalParameters.results)+"&cal_min="+nutritionalParameters.cal_min+"&cal_max="+nutritionalParameters.cal_max+"&fields="+encodeURIComponent(nutritionalParameters.fields)+"&appId="+nutritionalParameters.appId+"&appKey="+nutritionalParameters.appKey,
                               body: nutritionData,
@@ -128,27 +115,22 @@ app.post('/food-analysis', function (req, res) {
                                 console.log(("NUTRITIONAL RELEVANCE SCORE: " + parsedData.max_score).magenta);
                                 if (parsedData.max_score > 0.82) {
                                   var relevantNutrition = parsedData.hits[0];
-                                  // console.log(relevantNutrition);
                                   console.log(relevantNutrition.fields.item_name);
 
                                   var easyDisplayName = toTitleCase(relevantNutrition.fields.item_name); // so it looks better on the iphone
                                   console.log("EVERYTHING WORKED".green);
                                   console.log(Math.round(parsedData.max_score * 100)/100);
-
                                   console.log(relevantNutrition.fields["nf_ingredient_statement"]);
 
                                   for (var key in relevantNutrition.fields) {
-
                                     if (key !== "item_name") {
                                       if (key !== "nf_calories") {
                                         if (key !== "nf_serving_size_qty") {
                                           if (key !== "nf_serving_size_unit") {
-
                                             if ((key.indexOf("allergen") > -1) == false) {
                                                   if (relevantNutrition.fields[key] == null) {
                                                     relevantNutrition.fields[key] = "0";
                                                   }
-
                                                   if (key == "nf_sodium") {
                                                     relevantNutrition.fields[key] += "mg";
                                                   } else if (key == "nf_cholesterol") {
@@ -160,15 +142,11 @@ app.post('/food-analysis', function (req, res) {
                                                   } else {
                                                     relevantNutrition.fields[key] += "g";
                                                   }
-
                                             }
                                           }
                                         }
                                       }
                                     }
-
-
-
                                   }
 
                                   console.log(relevantNutrition.fields["nf_ingredient_statement"]);
@@ -176,21 +154,17 @@ app.post('/food-analysis', function (req, res) {
                                   res.send(awesomeData);
                                   fs.writeFile(__dirname+"/user_cache/"+generatePushID()+".json", JSON.stringify(awesomeData), function(err) {
                                     if (err) throw err;
-
                                   });
-
 
                                 } else {
                                   var returnData = {"imageB64":req.body.image, "Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"};
                                   res.send(returnData);
                                   fs.writeFile(__dirname+"/user_cache/"+ generatePushID() +".json", JSON.stringify(returnData), function(err) {
                                     if (err) throw err;
-
                                   });
                                 }
 
                               }
-
 
                           }); // end nutritoinix api
 
@@ -198,19 +172,11 @@ app.post('/food-analysis', function (req, res) {
                           res.send({"Error": "There was an error."});
                         }
                       }
-
-
                   });
                 }
-
             }
-
           });
-
-
     });
-
-
   }
 }); // end food-analysis
 
@@ -254,54 +220,6 @@ app.get("/saved-user-data", function (req, res) {
     res.send("No new content.");
   }
 });
-
-
-
-// We really don't care about this for now
-// UPC product scans
-// app.post('/upc-analysis', function (req, res) {
-//   res.setHeader('Content-Type', 'application/json');
-//
-//   if (req.body.upc) {
-//     var upcData = {
-//       code: req.body.upc,
-//       appId: process.env.NUTRITION_APP_ID,
-//       appKey: process.env.NUTRITION_API_KEY
-//     };
-//
-//     request({
-//         uri: "https://api.nutritionix.com/v1_1/item?upc="+ encodeURIComponent(upcData.code) +"&appId="+ encodeURIComponent(upcData.appId) +"&appKey="+encodeURIComponent(upcData.appKey),
-//         method: 'GET'
-//       }, function (nutriErr, nutriRes, nutriBody) {
-//         if (nutriErr) {
-//           res.send({"Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"});
-//         } else {
-//           var parsedData = JSON.parse(nutriBody);
-//           if (parsedData.max_score > 1) {
-//             var relevantNutrition = parsedData;
-//
-//             var easyDisplayName = toTitleCase((JSON.parse(resBody).name).split(" ")[0]); // so it looks better on the iphone
-//             console.log("EVERYTHING WORKED".green);
-//
-//             // send and save the data
-//             var awesomeData = {"result":{"object_name":toTitleCase(JSON.parse(resBody).name), "easy_display_name": easyDisplayName, "data": relevantNutrition}};
-//             res.send(awesomeData);
-//             fs.writeFile(__dirname+"/user_cache/saved-data.json", awesomeData, function(err) {
-//               if (err) throw err;
-//
-//             });
-//
-//           } else {
-//
-//             res.send({"Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"});
-//           }
-//
-//         }
-//
-//     }); // end nutritoinix api
-//   }
-// });
-
 
 
 
