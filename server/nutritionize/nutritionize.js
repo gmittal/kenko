@@ -10,7 +10,7 @@ require('shelljs/global');
 
 var searchQuery = process.argv[2];
 if (searchQuery) {
-    var netResult = JSON.parse(exec('nutritionize/./phantomjs nutritionize/deps/nutritionize-net.js "'+ searchQuery +'"', {silent:false}).output);
+    var netResult = JSON.parse(exec('nutritionize/./phantomjs nutritionize/deps/nutritionize-net.js "'+ searchQuery +'"', {silent:true}).output);
 
     var png = new img(netResult.rawImage_path);
 
