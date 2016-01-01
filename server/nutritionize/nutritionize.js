@@ -9,7 +9,7 @@ var fs = require('fs');
 var img = require('cropng');
 require('shelljs/global');
 var app = express();
-var port = 3005;
+var port = 3006;
 app.use(bodyParser.json({limit:'50mb', extended: true}));
 app.use(bodyParser.urlencoded({limit:'50mb', extended: true}));
 app.use(function(req, res, next) { // enable CORS
