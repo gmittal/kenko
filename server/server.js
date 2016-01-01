@@ -34,149 +34,18 @@ app.post('/food-analysis', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
 
   if (req.body.image) {
-
-    var imageID = generatePushID(); // generate a unique token for each image
+    var imageID = generatePushID();
 
     fs.writeFile(__dirname+'/uploaded_data/'+imageID+'.jpeg', req.body.image, 'base64', function (err) {
       if (err) throw err;
       console.log('Image successfully uploaded.'.green);
       console.log((process.env.HOSTNAME+"/uploaded_img/"+imageID).blue);
 
-      var form = {
-          'image_request[remote_image_url]': process.env.HOSTNAME+"/uploaded_img/"+imageID+".jpeg",
-          "image_request[locale]": "en-US"
-      };
-
-      var formData = querystring.stringify(form);
-      var contentLength = formData.length;
-
-      console.log(process.env.CLOUDSIGHT_KEY);
-
-
-        request({
-            headers: {
-              'Authorization': 'CloudSight '+ process.env.CLOUDSIGHT_KEY,
-              'Content-Length': contentLength,
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            uri: 'https://api.cloudsightapi.com/image_requests',
-            body: formData,
-            method: 'POST'
-          }, function (err, resPost, body) {
-            //it works!
-            if (err) {
-              res.send({"Error": "There was an error from images-request"})
-            } else {
-              console.log(body);
-              var resToken = JSON.parse(body).token;
-
-              console.log("Processing image information...".cyan);
-
-              loopResponseCloud();
-              function loopResponseCloud() {
-                  request({url: "https://api.cloudsightapi.com/image_responses/"+resToken, headers: {'Authorization': 'CloudSight '+ process.env.CLOUDSIGHT_KEY}}, function (resError, resResponse, resBody) {
-                      if (JSON.parse(resBody).status == "not completed") {
-                        loopResponseCloud();
-                      } else if (JSON.parse(resBody).status == "skipped") {
-                        res.send({"Error": "Error reading the photo. Please try again."});
-                      } else if (JSON.parse(resBody).status == "completed") { // if the image recognition occurred, start finding nutritional data
-
-                        console.log(resBody);
-
-                        if (typeof JSON.parse(resBody).name !== "undefined") {
-                          console.log((JSON.parse(resBody).name).green);
-
-                          // get nutritional data
-                          var nutritionalParameters = {
-                            "appId":process.env.NUTRITION_APP_ID,
-                            "appKey":process.env.NUTRITION_API_KEY,
-                            "phrase":JSON.parse(resBody).name,
-                            "fields":"*",
-                            "results":"0:50",
-                            "cal_min":0,
-                            "cal_max":50000
-                          };
-
-                          var nutritionData = querystring.stringify(nutritionalParameters);
-                          request({
-                              uri: 'https://api.nutritionix.com/v1_1/search/'+encodeURIComponent(nutritionalParameters.phrase)+"?results="+encodeURIComponent(nutritionalParameters.results)+"&cal_min="+nutritionalParameters.cal_min+"&cal_max="+nutritionalParameters.cal_max+"&fields="+encodeURIComponent(nutritionalParameters.fields)+"&appId="+nutritionalParameters.appId+"&appKey="+nutritionalParameters.appKey,
-                              body: nutritionData,
-                              method: 'GET'
-                            }, function (nutriErr, nutriRes, nutriBody) {
-                              if (nutriErr) {
-                                var returnedData = {"imageB64":req.body.image, "Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"};
-                                res.send(returnedData);
-                                fs.writeFile(__dirname+"/user_cache/"+generatePushID()+".json", JSON.stringify(returnedData), function(err) {
-                                  if (err) throw err;
-
-                                });
-                              } else {
-                                var parsedData = JSON.parse(nutriBody);
-                                console.log(("NUTRITIONAL RELEVANCE SCORE: " + parsedData.max_score).magenta);
-                                if (parsedData.max_score > 0.82) {
-                                  var relevantNutrition = parsedData.hits[0];
-                                  console.log(relevantNutrition.fields.item_name);
-
-                                  var easyDisplayName = toTitleCase(relevantNutrition.fields.item_name); // so it looks better on the iphone
-                                  console.log("EVERYTHING WORKED".green);
-                                  console.log(Math.round(parsedData.max_score * 100)/100);
-                                  console.log(relevantNutrition.fields["nf_ingredient_statement"]);
-
-                                  for (var key in relevantNutrition.fields) {
-                                    if (key !== "item_name") {
-                                      if (key !== "nf_calories") {
-                                        if (key !== "nf_serving_size_qty") {
-                                          if (key !== "nf_serving_size_unit") {
-                                            if ((key.indexOf("allergen") > -1) == false) {
-                                                  if (relevantNutrition.fields[key] == null) {
-                                                    relevantNutrition.fields[key] = "0";
-                                                  }
-                                                  if (key == "nf_sodium") {
-                                                    relevantNutrition.fields[key] += "mg";
-                                                  } else if (key == "nf_cholesterol") {
-                                                    relevantNutrition.fields[key] += "mg";
-                                                  } else if (key == "nf_ingredient_statement") {
-                                                    if (relevantNutrition.fields[key] == null) {
-                                                      relevantNutrition.fields[key] = "No ingredients.";
-                                                    }
-                                                  } else {
-                                                    relevantNutrition.fields[key] += "g";
-                                                  }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-
-                                  console.log(relevantNutrition.fields["nf_ingredient_statement"]);
-                                  var awesomeData = {"imageB64":req.body.image, "result":{"object_name":toTitleCase(JSON.parse(resBody).name), "confidence": Math.round(parsedData.max_score * 100)/100, "easy_display_name": easyDisplayName, "data": relevantNutrition}};
-                                  res.send(awesomeData);
-                                  fs.writeFile(__dirname+"/user_cache/"+generatePushID()+".json", JSON.stringify(awesomeData), function(err) {
-                                    if (err) throw err;
-                                  });
-
-                                } else {
-                                  var returnData = {"imageB64":req.body.image, "Scan_Error": "There is no nutritional value in consuming a '" + JSON.parse(resBody).name+"'"};
-                                  res.send(returnData);
-                                  fs.writeFile(__dirname+"/user_cache/"+ generatePushID() +".json", JSON.stringify(returnData), function(err) {
-                                    if (err) throw err;
-                                  });
-                                }
-
-                              }
-
-                          }); // end nutritoinix api
-
-                        } else {
-                          res.send({"Error": "There was an error."});
-                        }
-                      }
-                  });
-                }
-            }
-          });
+      console.log()
     });
+
+  } else {
+    res.send({"Error": "Missing parameters."});
   }
 }); // end food-analysis
 
