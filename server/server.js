@@ -48,6 +48,7 @@ app.post('/food-analysis', function (req, res) {
 
             // Run nutrition database search
             request.post("http://usekenko.co:3006/nutritionize", {form: {"query": caption}}, function (nutriErr, nutriRes, nutriBody) {
+              console.log(nutriRes.statusCode);
               if (!nutriErr && nutriRes.statusCode == 200) {
                 console.log(JSON.parse(nutriBody).label);
                 res.send(JSON.parse(nutriBody)); // send the nutrition label
