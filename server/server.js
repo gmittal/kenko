@@ -37,16 +37,19 @@ app.post('/food-analysis', function (req, res) {
     fs.writeFile(__dirname+'/uploaded_data/'+imageID+'.jpeg', req.body.image, 'base64', function (err) {
       if (err) throw err;
       var image_url = process.env.HOSTNAME+"/uploaded_img/"+imageID+".jpeg";
+      console.log(image_url);
       // recognize image
       request.post('http://usekenko.co:3005/remote-identify',{form: {'image_url': image_url}}, function (e, r, b) {
         if (!e && r.statusCode == 200) {
             var caption = JSON.parse(b).name;
+            console.log(caption);
             // Run some NLP Bayesian magic to determine whether what we're looking at is food or not
             // Will need to train classifier using CloudSight responses + ImageNet
 
             // Run nutrition database search
             request.post("http://usekenko.co:3006/nutritionize", {form: {"query": caption}}, function (nutriErr, nutriRes, nutriBody) {
               if (!nutriErr && nutriRes == 200) {
+                console.log(JSON.parse(nutriBody).label);
                 res.send(JSON.parse(nutriBody)); // send the nutrition label
               } else {
                 res.send({"Error": "Error processing image."});
