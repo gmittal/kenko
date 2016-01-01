@@ -40,13 +40,18 @@ app.post('/food-analysis', function (req, res) {
       // recognize image
       request.post('http://usekenko.co:3005/remote-identify',{form: {'image_url': image_url}}, function (e, r, b) {
         if (!e && r.statusCode == 200) {
-            console.log(JSON.parse(b).name);
-
+            var caption = JSON.parse(b).name;
             // Run some NLP Bayesian magic to determine whether what we're looking at is food or not
             // Will need to train classifier using CloudSight responses + ImageNet
 
             // Run nutrition database search
-
+            request.post("http://usekenko.co:3006/nutritionize", {form: {"query": caption}}, function (nutriErr, nutriRes, nutriBody) {
+              if (!nutriErr && nutriRes == 200) {
+                res.send(JSON.parse(nutriBody)); // send the nutrition label
+              } else {
+                res.send({"Error": "Error processing image."});
+              }
+            });
 
         } else {
           res.send({"Error": "Error processing image."});
