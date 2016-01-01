@@ -24,7 +24,7 @@ app.use(function(req, res, next) { // enable CORS
 app.post('/nutritionize', function (req, res) {
   if (req.body.query) {
         var searchQuery = req.body.query;
-        var netResult = JSON.parse(exec('./phantomjs deps/nutritionize-net.js "'+ searchQuery +'"', {silent:true}).output);
+        var netResult = JSON.parse(exec('./phantomjs deps/nutritionize-net.js "'+ searchQuery +'"', {silent:false}).output);
 
         var png = new img(netResult.rawImage_path);
 
@@ -33,6 +33,7 @@ app.post('/nutritionize', function (req, res) {
         	    if (err) console.log(err);
         	    var uploaded_image = exec('curl -F "file=@'+netResult.rawImage_path+'" https://file.io', {silent:true}).output.split("\n");
               rm('-rf', netResult.rawImage_path); // delete what is now stored in the cloud
+              console.log(JSON.parse(uploaded_image[uploaded_image.length-1]).link);
               res.send({"label":JSON.parse(uploaded_image[uploaded_image.length-1]).link});
 
         	});
