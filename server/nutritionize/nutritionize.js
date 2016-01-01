@@ -40,3 +40,9 @@ app.post('/nutritionize', function (req, res) {
     res.send({"Error": "You mad?"});
   }
 });
+
+var server = app.listen(port, function () {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log('Subtly listening at port '+port+'...');
+});
