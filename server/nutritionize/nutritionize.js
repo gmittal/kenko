@@ -10,8 +10,8 @@ var img = require('cropng');
 require('shelljs/global');
 var app = express();
 var port = 3006;
-app.use(bodyParser.json({limit:'50mb', extended: true}));
-app.use(bodyParser.urlencoded({limit:'50mb', extended: true}));
+app.use(bodyParser.json({extended: true}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(function(req, res, next) { // enable CORS
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -24,7 +24,7 @@ app.use(function(req, res, next) { // enable CORS
 app.post('/nutritionize', function (req, res) {
   if (req.body.query) {
         var searchQuery = req.body.query;
-        var netResult = JSON.parse(exec('./phantomjs deps/nutritionize-net.js "'+ searchQuery +'"', {silent:false}).output);
+        var netResult = JSON.parse(exec(__dirname+'./phantomjs deps/nutritionize-net.js "'+ searchQuery +'"', {silent:false}).output);
 
         var png = new img(netResult.rawImage_path);
 
