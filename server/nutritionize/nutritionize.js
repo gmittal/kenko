@@ -23,6 +23,7 @@ app.use(function(req, res, next) { // enable CORS
 // Send search query, receive awesomeness back
 app.post('/nutritionize', function (req, res) {
   if (req.body.query) {
+        var searchQuery = req.body.query;
         var netResult = JSON.parse(exec('./phantomjs deps/nutritionize-net.js "'+ searchQuery +'"', {silent:true}).output);
 
         var png = new img(netResult.rawImage_path);
