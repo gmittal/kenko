@@ -38,10 +38,9 @@ app.post('/food-analysis', function (req, res) {
 
     fs.writeFile(__dirname+'/uploaded_data/'+imageID+'.jpeg', req.body.image, 'base64', function (err) {
       if (err) throw err;
-      console.log('Image successfully uploaded.'.green);
-      console.log((process.env.HOSTNAME+"/uploaded_img/"+imageID).blue);
 
-      console.log()
+      var image_url = process.env.HOSTNAME+"/uploaded_img/"+imageID+".jpeg";
+      
     });
 
   } else {
