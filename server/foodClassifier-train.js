@@ -28,7 +28,7 @@ fs.readFile(__dirname+'/training_data/imagenet.drink[food].txt', 'utf-8', functi
 
 function trainFoodClassifier() {
   for (var i = 0; i < food_urls.length; i++) {
-    console.log('visualize "'+food_urls[i]).output+'"');
+    console.log('visualize "'+food_urls[i].output+'"');
     var caption = JSON.parse(exec('phantomjs ~/visual-search-god-api/visualize.js "'+food_urls[i]).output+'"').name;
     classifier.addDocument(caption, 'food');
     console.log(((i/food_urls.length)*100)+"% -- " + food_urls[i]);
