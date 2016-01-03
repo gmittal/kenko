@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="//cdn.rawgit.com/nutritionix/nutrition-label/master/nutritionLabel-min.css" />
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="//cdn.rawgit.com/nutritionix/nutrition-label/master/nutritionLabel-min.js"></script>
+<style>
+.nutritionLabel .title {
+  font-family: serif, 'Times', 'Times New Roman'!important;
+  font-weight:bold!important;
+}
+.nutritionLabel {
+  font-size: 10pt!important;
+  font-family: 'Helvetica', 'Arial', sans-serif!important;
+}
+
+.name {
+  font-size: 11pt!important;
+  line-height: 110%!important;
+}
+
+.servingSizeText {
+  font-size: 10pt!important;
+}
+
+.serving {
+  line-height: 100%!important;
+}
+
+.servingUnit {
+  font-size: 10pt!important;
+}
+
+#label {
+  font-size: 9.5pt!important;
+}
+
+.nutritionLabel .line {
+  font-size: 9.5pt!important;
+}
+
+.calorieNote {
+  font-size: 8pt!important;
+}
+</style>
+</head>
+<body>
+<div id="label">
+</div>
+<script>
+$.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) {
+  console.log(data);
+  var sUnit = data.servingReference.split(" ");
+  sUnit.splice(0, 1);
+
+  var fibers = false;
+  var transfat = false;
+  var vitamina = false;
+  var vitaminc = false;
+  var iron = false;
+  var calcium = false;
+  if (data.fiberContent) {
+    fibers = true;
+  }
+  if (data.transFatContent) {
+    transfat = true;
+  }
+  if (data.vitaminA) {
+    vitamina = true;
+  }
+  if (data.vitaminC) {
+    vitaminc = true;
+  }
+  if (data.iron) {
+    iron = true;
+  }
+  if (data.calcium) {
+    calcium = true;
+  }
+
+  $('#label').nutritionLabel({
+    'showItemName' : true,
+    'showServingsPerContainer' : false,
+
+    'showPolyFat' : false,
+    'showMonoFat' : false,
+
+
+    'showTransFat' : transfat,
+    'showFibers' : fibers,
+    'showVitaminA' : vitamina,
+    'showVitaminC' : vitaminc,
+    'showCalcium' : calcium,
+    'showIron' : iron,
+
+    'itemName': data.name,
+    'valueServingUnitQuantity' : data.servingReference.split(" ")[0],
+    'valueServingSizeUnit' : sUnit.join(" "),
+
+
+    'valueCalories' : data.calories.amount,
+    'valueFatCalories' : data.caloriesFromFat.amount,
+    'valueTotalFat' : data.fatContent.amount,
+    'valueSatFat' : data.saturatedFatContent.amount,
+    'valueCholesterol' : data.cholesterolContent.amount,
+    'valueSodium' : data.sodiumContent.amount,
+    'valueTotalCarb' : data.carbohydrateContent.amount,
+    'valueSugars' : data.sugarContent.amount,
+    'valueProteins' : data.proteinContent.amount,
+    // optionals
+    'valueFibers': (data.fiberContent ? data.fiberContent.amount : null),
+    'valueTransFat': (data.transFatContent ? data.transFatContent.amount : null),
+    'valueVitaminA': parseInt((data.vitaminA ? data.vitaminA.dv : 0), 10),
+    'valueVitaminC': parseInt((data.vitaminA ? data.vitaminA.dv : 0), 10),
+    'valueCalcium': parseInt((data.calcium ? data.calcium.dv : 0), 10),
+    'valueIron': parseInt((data.iron ? data.iron.dv : 0), 10)
+  });
+
+  //injecty
+  $(".setter").remove(); var q = $("input").val(); $("input").remove(); $(".servingSizeField").remove(); $(".servingSizeText").append(" "+q); $(".ingredientListDiv").remove();
+
+});
+</script>
+</body>
+</html>

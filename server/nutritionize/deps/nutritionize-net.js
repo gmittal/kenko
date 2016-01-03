@@ -18,29 +18,64 @@ page.open("http://www.nutritionix.com/search?q="+encodeURI(system.args[1]), func
     } else {
         var address = system.args[1];
         var results = page.evaluate(function(address) {
-            var pizza = "http://www.nutritionix.com" + $(".list-search-results li:nth-child(1) > a").attr("href");
-            return pizza;
+            if (typeof $(".list-search-results li:nth-child(1) > a").attr("href") !== "undefined") {
+                var pizza = "http://www.nutritionix.com" + $(".list-search-results li:nth-child(1) > a").attr("href");
+                return pizza;
+            } else {
+              return "No results found";
+            }
         }, address);
 
+        if (results == "No results found") {
+          console.log("No results found.");
+          phantom.exit();
+        }
+
         var detailPage = require('webpage').create();
+        detailPage.onConsoleMessage = function (msg) { console.log(msg); };
         detailPage.open(results, function (s) {
-          // prepare the screenshot of the label
-          detailPage.viewportSize = {width: width, height: height};
+          var name = system.args[1];
+          var nutritionInfo = detailPage.evaluate(function (name) {
+            var schema = {};
 
+            String.prototype.capitalize = function() {
+                return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+            };
 
-          var labelDimensions = detailPage.evaluate(function (w, h) {
-            document.body.style.width = w + "px";
-            document.body.style.height = h + "px";
-            return {height: $(".nutritionLabel").height(), width: $(".nutritionLabel").width()};
-          }, width, height);
-          // console.log(JSON.stringify(labelDimensions));
+            schema["name"] = name.capitalize();
 
-          detailPage.clipRect = {top: 0, left: 0, width: width, height: height};
+            // serving reference
+            schema["servingReference"] = $(".unitQuantityBox").val() + " " + $(".servingUnit").text();
 
-          var labelUUID = generatePushID();
-          detailPage.render("nutritionize/labels/"+labelUUID+".png");
+            $(".nutritionLabel .line").not(".m").not(".ar").not(".dvCalorieDiet").each(function (index) {
+              if ($(this).children("*[itemprop]").attr("itemprop")) {
+                  if ($(this).children("*[itemprop]").attr("itemprop") == "calories") {
+                    schema[$(this).children("*[itemprop]").attr("itemprop")] = {
+                      "amount": $(this).children("*[itemprop]").text().split("\n")[0].split(" ")[1],
+                      "dv": $(this).children(".dv").text()
+                    };
 
-          console.log(JSON.stringify({size: labelDimensions, rawImage_path: fs.workingDirectory+"/nutritionize/labels/"+labelUUID+".png"}));
+                    schema["caloriesFromFat"] = {
+                      "amount": $(this).children(".fr").text().split(" ")[3],
+                      "dv": ""
+                    };
+                  } else {
+                    schema[$(this).children("*[itemprop]").attr("itemprop")] = {
+                      "amount": $(this).children("*[itemprop]").text().split("\n")[0],
+                      "dv": $(this).children(".dv").text()
+                    };
+                  }
+
+              } else { // if there's no itemprop, it's a vitamin
+                  schema[$(this).attr('class').split(" ")[1]] = {
+                      "dv": $(this).children(".dv").text()
+                  };
+              }
+            });
+            return schema;
+          }, name);
+
+          console.log(JSON.stringify(nutritionInfo));
           phantom.exit();
         }); // end detailPage
 
