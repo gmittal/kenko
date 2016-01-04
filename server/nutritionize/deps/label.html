@@ -64,6 +64,7 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
   var satFat = false;
   var sugar = false;
   var cholesterol = false;
+  var sodium = false;
   if (data.fiberContent) {
     fibers = true;
   }
@@ -91,6 +92,9 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
   if (data.cholesterolContent) {
     cholesterol = true;
   }
+  if (data.sodiumContent) {
+    sodium = true;
+  }
 
   $('#label').nutritionLabel({
     'showItemName' : true,
@@ -109,6 +113,7 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
     'showSatFat': satFat,
     'showSugars': sugar,
     'showCholesterol': cholesterol,
+    'showSodium':sodium,
 
     'itemName': data.name,
     'valueServingUnitQuantity' : data.servingReference.split(" ")[0],
@@ -120,7 +125,7 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
     'valueTotalFat' : data.fatContent.amount,
     'valueSatFat' : (data.saturatedFatContent ? data.saturatedFatContent.amount : null),
     'valueCholesterol' : (data.cholesterolContent ? data.cholesterolContent.amount : null),
-    'valueSodium' : data.sodiumContent.amount,
+    'valueSodium' : (data.sodiumContent.amount ? data.sodiumContent.amount : null),
     'valueTotalCarb' : data.carbohydrateContent.amount,
     'valueSugars' : (data.sugarContent ? data.sugarContent.amount : null),
     'valueProteins' : data.proteinContent.amount,
