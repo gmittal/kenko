@@ -70,22 +70,22 @@
     [stillImageOutput setOutputSettings:outputSettings];
     [session addOutput:stillImageOutput];
     
-    float gradHeight = 100;
-    UIView *bottomGrad = [[UIView alloc] initWithFrame:CGRectMake(0.0f, dHeight - gradHeight, dWidth, gradHeight)];
-    [self.view addSubview:bottomGrad];
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = bottomGrad.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[[UIColor blackColor] colorWithAlphaComponent:0.6] CGColor], nil];
-    [bottomGrad.layer insertSublayer:gradient atIndex:0];
+//    float gradHeight = 100;
+//    UIView *bottomGrad = [[UIView alloc] initWithFrame:CGRectMake(0.0f, dHeight - gradHeight, dWidth, gradHeight)];
+//    [self.view addSubview:bottomGrad];
+//    CAGradientLayer *gradient = [CAGradientLayer layer];
+//    gradient.frame = bottomGrad.bounds;
+//    gradient.colors = [NSArray arrayWithObjects:(id)[[UIColor clearColor] CGColor], (id)[[[UIColor blackColor] colorWithAlphaComponent:0.6] CGColor], nil];
+//    [bottomGrad.layer insertSublayer:gradient atIndex:0];
+//    
+//    UIView *topGrad = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0, dWidth, gradHeight)];
+//    [self.view addSubview:topGrad];
+//    CAGradientLayer *gradient2 = [CAGradientLayer layer];
+//    gradient2.frame = bottomGrad.bounds;
+//    gradient2.colors = [NSArray arrayWithObjects:(id)[[[UIColor blackColor] colorWithAlphaComponent:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil];
+//    [topGrad.layer insertSublayer:gradient2 atIndex:0];
     
-    UIView *topGrad = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0, dWidth, gradHeight)];
-    [self.view addSubview:topGrad];
-    CAGradientLayer *gradient2 = [CAGradientLayer layer];
-    gradient2.frame = bottomGrad.bounds;
-    gradient2.colors = [NSArray arrayWithObjects:(id)[[[UIColor blackColor] colorWithAlphaComponent:0.6] CGColor], (id)[[UIColor clearColor] CGColor], nil];
-    [topGrad.layer insertSublayer:gradient2 atIndex:0];
-    
-    UIButton* chevron = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, 50, 50)];
+    UIButton* chevron = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, 40, 40)];
 //    chevron.backgroundColor = [UIColor blueColor];
     [chevron setImage:[UIImage imageNamed:@"chevron-left.png"] forState:UIControlStateNormal];
 //    chevron.imageView.image = [UIImage imageNamed:@"chevron-left.png"];
@@ -94,7 +94,7 @@
     
     
     UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(0, -10, self.view.frame.size.width, 100)];
-    title.font = [UIFont fontWithName:@"Roboto-Bold" size:40];
+    title.font = [UIFont fontWithName:@"Hybrea" size:40];
     title.textAlignment = NSTextAlignmentCenter;
     title.textColor = [UIColor whiteColor];
     title.text = @"kenko";
@@ -103,10 +103,10 @@
     
     
     
-    
-    UIView* bar = [[UIView alloc] initWithFrame:CGRectMake(100, -10+80, self.view.frame.size.width - 200, 2)];
-    bar.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:bar];
+//    
+//    UIView* bar = [[UIView alloc] initWithFrame:CGRectMake(100, -10+80, self.view.frame.size.width - 200, 2)];
+//    bar.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:bar];
     
     float width = 75;
     float height = 75;
