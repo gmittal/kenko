@@ -2,6 +2,7 @@ var dotenv = require('dotenv');
 dotenv.load();
 var bodyParser = require('body-parser');
 var express = require('express');
+var fs = require('fs');
 var request = require('request');
 var twilio = require('twilio');
 var app = express();
@@ -18,26 +19,24 @@ app.use(function(req, res, next) { // enable CORS
   next();
 });
 
-app.get('/sms-analyze', function (req, res) {
+app.post('/sms-analyze', function (req, res) {
 	if (req.body.MediaUrl0) {
-		console.log("MMS was received.");
 		console.log(req.body.MediaUrl0);
-		request('http://api.qrserver.com/v1/read-qr-code/?fileurl='+req.body.MediaUrl0, function(err, response, body) {
-			data = JSON.parse(body);
-			console.log(JSON.stringify(body));
-			console.log(data[0].symbol[0].data);
 
-      client.messages.create({
-  		    body: "Kenko needs a picture (MMS) to process...",
-  		    to: req.body.From,
-  		    from: responseNumber,
-  		}, function(err, message) {
-  			console.log(err);
-  		});
-
-      res.send({"Success": "Data sent."});
-
-		});
+    request({url: req.body.MediaUrl0, encoding: null}, function (e, r, b) {
+        var a = new Buffer(b).toString('base64');
+        request.post("http://usekenko.co/food-analysis", {form: {"image": a}}, function (nutriError, nutriRes, nutriBody) {
+          console.log(JSON.parse(nutriBody).NUTRITION_LABEL);
+          client.messages.create({
+              body: "",
+              to: req.body.From,
+              from: responseNumber,
+              mediaUrl: JSON.parse(nutriBody).NUTRITION_LABEL
+          }, function(err, message) {
+            console.log(err);
+          });
+        });
+    });
 
 	} else {
 
@@ -46,7 +45,7 @@ app.get('/sms-analyze', function (req, res) {
 		    to: req.body.From,
 		    from: responseNumber,
 		}, function(err, message) {
-			console.log(err);
+			if (err) console.log(err);
 		});
 	}
 
@@ -56,5 +55,5 @@ var server = app.listen(port, function () {
   var host = server.address().address;
   var port = server.address().port;
 
-  console.log('Kenko SMS listening at http://%s:%s', host, port);
+  console.log('Kenko SMS listening at http://localhost:%s', port);
 });
