@@ -19,7 +19,37 @@ app.use(function(req, res, next) { // enable CORS
 });
 
 app.get('/sms-analyze', function (req, res) {
-  res.send('Hello World!');
+	if (req.body.MediaUrl0) {
+		console.log("MMS was received.");
+		console.log(req.body.MediaUrl0);
+		request('http://api.qrserver.com/v1/read-qr-code/?fileurl='+req.body.MediaUrl0, function(err, response, body) {
+			data = JSON.parse(body);
+			console.log(JSON.stringify(body));
+			console.log(data[0].symbol[0].data);
+
+      client.messages.create({
+  		    body: "Kenko needs a picture (MMS) to process...",
+  		    to: req.body.From,
+  		    from: responseNumber,
+  		}, function(err, message) {
+  			console.log(err);
+  		});
+
+      res.send({"Success": "Data sent."});
+
+		});
+
+	} else {
+
+		client.messages.create({
+		    body: "Kenko needs a picture (MMS) to process...",
+		    to: req.body.From,
+		    from: responseNumber,
+		}, function(err, message) {
+			console.log(err);
+		});
+	}
+
 });
 
 var server = app.listen(port, function () {
