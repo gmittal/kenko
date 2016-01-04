@@ -26,7 +26,7 @@ mkdir('label_templates');
 app.post('/nutritionize', function (req, res) {
   if (req.body.query) {
         var searchQuery = req.body.query;
-        var netResult = exec('phantomjs --web-security=no --ssl-protocol=any --ignore-ssl-errors=yes deps/nutritionize-net.js "'+ searchQuery +'"', {silent:true}).output;
+        var netResult = exec('phantomjs --web-security=no --ssl-protocol=any --ignore-ssl-errors=yes deps/nutritionize-net.js "'+ searchQuery +'"', {silent:false}).output;
 
         var uuid = generatePushID();
         fs.writeFile(__dirname + "/label_templates/"+uuid+".json", netResult, function (err) {
