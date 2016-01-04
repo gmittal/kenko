@@ -11,6 +11,7 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "cropng": "^0.1.1",
+    "dotenv": "^1.2.0",
     "express": "^4.13.3",
     "shelljs": "^0.5.3"
   }

@@ -1,8 +1,8 @@
 // Copyright 2016 Gautam Mittal
 // $ npm install
-// Requires node-canvas installed
-// Requires the custom build of PhantomJS included in the directory
-
+// Requires a simple HTTP server running on port 4001 in the label_templates directory
+var dotenv = require('dotenv');
+dotenv.load();
 var bodyParser = require('body-parser');
 var express = require('express');
 var fs = require('fs');
@@ -35,25 +35,18 @@ app.post('/nutritionize', function (req, res) {
             fs.writeFile("label_templates/"+uuid+".html", d, function (error) {
               if (error) throw error;
               console.log("Successfully created template: " + uuid);
+              console.log(process.env.HOSTNAME+"/"+uuid+".html");
+              var photo = JSON.parse(exec('phantomjs deps/camera.js http://localhost:4001/'+uuid+'.html', {silent:false}).output);
 
+              var uploaded_image = exec('curl -F "file=@'+photo.rawImage_path+'" https://file.io', {silent:true}).output.split("\n");
+              rm('-rf', photo.rawImage_path); // delete what is now stored in the cloud
+              console.log(JSON.parse(uploaded_image[uploaded_image.length-1]).link);
+              res.send({"label":JSON.parse(uploaded_image[uploaded_image.length-1]).link});
             });
           });
 
 
         });
-
-        // var png = new img(netResult.rawImage_path);
-        //
-        // png.crop({x:60, y:187, height: netResult.size.height+16, width: netResult.size.width+16}, function (err, image) {
-        // 	fs.writeFile(netResult.rawImage_path, image.data, function (err) {
-        // 	    if (err) console.log(err);
-        // 	    var uploaded_image = exec('curl -F "file=@'+netResult.rawImage_path+'" https://file.io', {silent:true}).output.split("\n");
-        //       rm('-rf', netResult.rawImage_path); // delete what is now stored in the cloud
-        //       console.log(JSON.parse(uploaded_image[uploaded_image.length-1]).link);
-        //       res.send({"label":JSON.parse(uploaded_image[uploaded_image.length-1]).link});
-        //
-        // 	});
-        // });
   } else {
     res.send({"Error": "You mad?"});
   }
