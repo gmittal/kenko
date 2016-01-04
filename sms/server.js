@@ -33,8 +33,11 @@ app.post('/sms-analyze', function (req, res) {
               from: responseNumber,
               mediaUrl: JSON.parse(nutriBody).NUTRITION_LABEL
           }, function(err, message) {
-            console.log(err);
+            if (err) console.log(err);
+            if (message) console.log(message);
           });
+
+          res.send({"Success": "Sent."});
         });
     });
 
