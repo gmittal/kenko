@@ -1,6 +1,7 @@
 // Copyright 2016 Gautam Mittal
 // $ npm install
 // Requires a simple HTTP server running on port 4001 in the label_templates directory
+// DOES NOT REQUIRE NODE-CANVAS (YAY)
 var dotenv = require('dotenv');
 dotenv.load();
 var bodyParser = require('body-parser');
@@ -41,7 +42,9 @@ app.post('/nutritionize', function (req, res) {
               var uploaded_image = exec('curl -F "file=@'+photo.rawImage_path+'" https://file.io', {silent:true}).output.split("\n");
               rm('-rf', photo.rawImage_path); // delete what is now stored in the cloud
               console.log(JSON.parse(uploaded_image[uploaded_image.length-1]).link);
-              res.send({"label":JSON.parse(uploaded_image[uploaded_image.length-1]).link});
+              var finalFinish = JSON.parse(netResult);
+              finalFinish["NUTRITION_LABEL"] = JSON.parse(uploaded_image[uploaded_image.length-1]).link;
+              res.send(finalFinish);
             });
           });
 
