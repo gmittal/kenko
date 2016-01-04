@@ -9,7 +9,6 @@ Note: In order to run the Node.js server you must create a file under the name o
 ```
 
 HOSTNAME=<Your hostname>
-CLOUDSIGHT_KEY=<CloudSight API Key>
 
 ```
 
