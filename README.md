@@ -1,18 +1,17 @@
 # Kenko (PennApps Fall 2015 Hack)
 **Internally known as しょくじ**
 
+Hackathon demo:
+
+[![Demo](http://img.youtube.com/vi/SdfDD9xpK_0/0.jpg)](http://www.youtube.com/watch?v=SdfDD9xpK_0)
+
+
 Take a photo of some food, and gain insight about its nutritious properties.
 
 Kenko is Copyright 2015 Gautam Mittal and Kevin Frans
 
-Note: In order to run the Node.js server you must create a file under the name of `.env` and make sure to add your own API Keys
 
-```
 
-HOSTNAME=<Your hostname>
-CLOUDSIGHT_KEY=<CloudSight API Key>
-
-```
 
 Licensed under the **[MIT License] [license]**.
 
