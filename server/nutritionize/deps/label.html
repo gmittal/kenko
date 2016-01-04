@@ -63,6 +63,7 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
   var calcium = false;
   var satFat = false;
   var sugar = false;
+  var cholesterol = false;
   if (data.fiberContent) {
     fibers = true;
   }
@@ -87,6 +88,9 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
   if (data.sugarContent) {
     sugar = true;
   }
+  if (data.cholesterolContent) {
+    cholesterol = true;
+  }
 
   $('#label').nutritionLabel({
     'showItemName' : true,
@@ -104,6 +108,7 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
     'showIron' : iron,
     'showSatFat': satFat,
     'showSugars': sugar,
+    'showCholesterol': cholesterol,
 
     'itemName': data.name,
     'valueServingUnitQuantity' : data.servingReference.split(" ")[0],
@@ -114,7 +119,7 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
     'valueFatCalories' : data.caloriesFromFat.amount,
     'valueTotalFat' : data.fatContent.amount,
     'valueSatFat' : (data.saturatedFatContent ? data.saturatedFatContent.amount : null),
-    'valueCholesterol' : data.cholesterolContent.amount,
+    'valueCholesterol' : (data.cholesterolContent ? data.cholesterolContent.amount : null),
     'valueSodium' : data.sodiumContent.amount,
     'valueTotalCarb' : data.carbohydrateContent.amount,
     'valueSugars' : (data.sugarContent ? data.sugarContent.amount : null),
