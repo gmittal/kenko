@@ -24,7 +24,7 @@
     UIImage* image;
     UIImageView* imageView;
     BALoadingView* loadingView;
-    UIView* popup;
+    UIImageView* popup;
     UIView* bg;
     float margin;
     ViewController* myParent;
@@ -79,15 +79,15 @@
     [self.view addSubview:bg];
     
     title = [[UILabel alloc] initWithFrame:CGRectMake(0, -10, self.view.frame.size.width, 100)];
-    title.font = [UIFont fontWithName:@"Roboto-Bold" size:40];
+    title.font = [UIFont fontWithName:@"Hybrea" size:40];
     title.textAlignment = NSTextAlignmentCenter;
     title.textColor = [UIColor whiteColor];
     title.text = @"kenko";
     [self.view addSubview:title];
     
-    tbar = [[UIView alloc] initWithFrame:CGRectMake(100, -10+80, self.view.frame.size.width - 200, 2)];
-    tbar.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:tbar];
+//    tbar = [[UIView alloc] initWithFrame:CGRectMake(100, -10+80, self.view.frame.size.width - 200, 2)];
+//    tbar.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:tbar];
     
     
     
@@ -100,8 +100,9 @@
 //    [scroll sets]
     
     float sidem = 0;
-    popup = [[UIView alloc] initWithFrame:CGRectMake(0, margin+dHeight, dWidth, dHeight-margin)];
-    popup.backgroundColor = [UIColor colorWithRed:242/255.0 green:38/255.0 blue:9/255.0 alpha:0.50];
+    popup = [[UIImageView alloc] initWithFrame:CGRectMake(0, margin+dHeight, dWidth, dHeight-margin)];
+    popup.image = [UIImage imageNamed:@"kenko-gradient.png"];
+    popup.layer.opacity = 0.65;
     [scroll addSubview:popup];
     
 //    UIView* leftbridge = [[UIView alloc] initWithFrame:CGRectMake(-100, 0, 100, dHeight)];
