@@ -125,7 +125,7 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
     'valueTotalFat' : data.fatContent.amount,
     'valueSatFat' : (data.saturatedFatContent ? data.saturatedFatContent.amount : null),
     'valueCholesterol' : (data.cholesterolContent ? data.cholesterolContent.amount : null),
-    'valueSodium' : (data.sodiumContent.amount ? data.sodiumContent.amount : null),
+    'valueSodium' : (data.sodiumContent ? data.sodiumContent.amount : null),
     'valueTotalCarb' : data.carbohydrateContent.amount,
     'valueSugars' : (data.sugarContent ? data.sugarContent.amount : null),
     'valueProteins' : data.proteinContent.amount,
