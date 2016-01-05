@@ -43,6 +43,8 @@ app.post('/nutritionize', function (req, res) {
               rm('-rf', photo.rawImage_path); // delete what is now stored in the cloud
               console.log(JSON.parse(uploaded_image[uploaded_image.length-1]).link);
               var finalFinish = JSON.parse(netResult);
+		finalFinish["LABEL_HEIGHT"] = photo.height;
+		finalFinish["LABEL_WIDTH"] = photo.width;
               finalFinish["NUTRITION_LABEL"] = JSON.parse(uploaded_image[uploaded_image.length-1]).link;
               res.send(finalFinish);
             });
