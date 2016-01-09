@@ -45,18 +45,24 @@ app.post('/food-analysis', function (req, res) {
             console.log(caption);
             // Run some NLP Bayesian magic to determine whether what we're looking at is food or not
             // Will need to train classifier using CloudSight responses + ImageNet
+            var foodDelegate = exec('phantomjs food-recognizer.json "'+ caption +'"').output;
+            if (foodDelegate == "UNKNOWN") {
+              res.send({"Error": "Cannot verify food image."});
+            } else if (foodDelegate == "NOT FOOD") {
+              res.send({"Error": "That is not food."});
+            } else if (foodDelegate == "FOOD") { // aha! I see that it is food!
 
-            // Run nutrition database search
-            request.post("http://usekenko.co:3006/nutritionize", {form: {"query": caption}}, function (nutriErr, nutriRes, nutriBody) {
-             // console.log(nutriRes.statusCode);
-              if (!nutriErr && nutriRes.statusCode == 200) {
-                  console.log(JSON.parse(nutriBody).NUTRITION_LABEL);
-                res.send(nutriBody); // send the nutrition label
-              } else {
-                res.send({"Error": "Error processing image."});
-              }
-            });
-
+                // Run nutrition database search
+                request.post("http://usekenko.co:3006/nutritionize", {form: {"query": caption}}, function (nutriErr, nutriRes, nutriBody) {
+                 // console.log(nutriRes.statusCode);
+                  if (!nutriErr && nutriRes.statusCode == 200) {
+                      console.log(JSON.parse(nutriBody).NUTRITION_LABEL);
+                    res.send(nutriBody); // send the nutrition label
+                  } else {
+                    res.send({"Error": "Error processing image."});
+                  }
+                }); // end nutrition search
+            } // end if FOOD
         } else {
           res.send({"Error": "Error processing image."});
         }
