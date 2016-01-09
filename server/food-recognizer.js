@@ -3,8 +3,6 @@
 // Command line tool that tells you whether something is food or not
 // Returns FOOD, NOT FOOD, or UNKNOWN
 // Add --json flag to spit out JSON
-var width = 1024;
-var height = 1024;
 var page = require('webpage').create(),
 system = require('system'),
 fs = require('fs');
@@ -58,61 +56,5 @@ page.open("http://demo1.alchemyapi.com/language.php", function (status) {
             $(".btn[data-is=submit]").click();
 
         }, address);
-
-
-
-
-
     }
 });
-
-
-function renderCurrentViewport(page, filename) {
-  var viewportSize = page.viewportSize;
-  var scrollOffsets = page.evaluate(function() {
-    return {
-      x: window.pageXOffset,
-      y: window.pageYOffset
-    };
-  });
-  page.clipRect = {
-    top: scrollOffsets.y,
-    left: scrollOffsets.x,
-    height: viewportSize.height,
-    width: viewportSize.width
-  };
-  page.render(filename);
-}
-
-generatePushID = (function() {
-  var PUSH_CHARS = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
-  var lastPushTime = 0;
-  var lastRandChars = [];
-  return function() {
-    var now = new Date().getTime();
-    var duplicateTime = (now === lastPushTime);
-    lastPushTime = now;
-    var timeStampChars = new Array(8);
-    for (var i = 7; i >= 0; i--) {
-      timeStampChars[i] = PUSH_CHARS.charAt(now % 64);
-      // NOTE: Can't use << here because javascript will convert to int and lose the upper bits.
-      now = Math.floor(now / 64);
-    }
-    if (now !== 0) throw new Error('We should have converted the entire timestamp.');
-    var id = timeStampChars.join('');
-    if (!duplicateTime) {
-      for (i = 0; i < 12; i++) {
-        lastRandChars[i] = Math.floor(Math.random() * 64);
-      }
-    } else {
-      for (i = 11; i >= 0 && lastRandChars[i] === 63; i--) {
-        lastRandChars[i] = 0;
-      }
-      lastRandChars[i]++;
-    }
-    for (i = 0; i < 12; i++) {
-      id += PUSH_CHARS.charAt(lastRandChars[i]);
-    }
-    if(id.length != 20) throw new Error('Length should be 20.');
-    return id;
-  };})();
