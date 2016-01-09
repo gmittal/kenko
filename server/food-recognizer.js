@@ -15,7 +15,7 @@ function evaluate(page, func) {
 
 page.open("http://demo1.alchemyapi.com/language.php", function (status) {
   var phantomLogCounter = 0;
-  page.onConsoleMessage = function (msg) { // the msg object contains all of the JSON data returned by the AI
+  page.onConsoleMessage = function (msg) {
     phantomLogCounter++;
     if (phantomLogCounter == 12) {
       if (system.args[2] != "--json") {
@@ -38,7 +38,8 @@ page.open("http://demo1.alchemyapi.com/language.php", function (status) {
   };
 
   if (status !== 'success') {
-        console.log('Unable to access network');
+        console.log('UNKNOWN');
+        phantom.exit();
     } else {
         var address = system.args[1];
         var results = page.evaluate(function(address) {
