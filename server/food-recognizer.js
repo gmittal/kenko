@@ -18,16 +18,21 @@ page.open("http://demo1.alchemyapi.com/language.php", function (status) {
   page.onConsoleMessage = function (msg) { // the msg object contains all of the JSON data returned by the AI
     phantomLogCounter++;
     if (phantomLogCounter == 12) {
-      if (JSON.parse(msg).length > 0) {
-        var i = JSON.parse(msg)[0].label;
-        if (i.indexOf("food") > -1 || i.indexOf("drink") > -1 || i.indexOf("beverage") > -1) {
-          console.log("FOOD");
+      if (system.args[2] != "--json") {
+        if (JSON.parse(msg).length > 0) {
+          var i = JSON.parse(msg)[0].label;
+          if (i.indexOf("food") > -1 || i.indexOf("drink") > -1 || i.indexOf("beverage") > -1) {
+            console.log("FOOD");
+          } else {
+            console.log("NOT FOOD");
+          }
         } else {
-          console.log("NOT FOOD");
+          console.log("UNKNOWN");
         }
       } else {
-        console.log("UNKNOWN");
+        console.log(msg);
       }
+
       phantom.exit();
     }
   };
