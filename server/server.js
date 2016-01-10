@@ -45,7 +45,7 @@ app.post('/food-analysis', function (req, res) {
             console.log(caption);
             // Run some NLP Bayesian magic to determine whether what we're looking at is food or not
             // Will need to train classifier using CloudSight responses + ImageNet
-            var foodDelegate = exec('phantomjs '+__dirname+'/food-recognizer.js "'+ caption +'"').output;
+            var foodDelegate = exec('phantomjs '+__dirname+'/food-recognizer.js "'+ caption +'"').output.split("\n")[0];
             if (foodDelegate == "UNKNOWN") {
               res.send({"Error": "Cannot verify food image."});
             } else if (foodDelegate == "NOT FOOD") {
