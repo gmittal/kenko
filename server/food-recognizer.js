@@ -16,8 +16,7 @@ function evaluate(page, func) {
 page.open("http://demo1.alchemyapi.com/language.php", function (status) {
   var phantomLogCounter = 0;
   page.onConsoleMessage = function (msg) {
-    phantomLogCounter++;
-    if (phantomLogCounter == 12) {
+      if (msg.indexOf(",") > -1) {
       if (system.args[2] != "--json") {
         if (JSON.parse(msg).length > 0) {
           var i = JSON.parse(msg)[0].label;
@@ -48,15 +47,16 @@ page.open("http://demo1.alchemyapi.com/language.php", function (status) {
             console.log = function() {
                 logcounter++;
                 if (logcounter == 11) {
-                  setTimeout(function() {
-                    $("div[data-is=category]").click()
-                    $("span[data-is=JSON]").click()
-                    var i = ($(".json_container").text().split(']')[2]+"]}");
-                    console.log(JSON.stringify(JSON.parse(i.slice(2, i.length)).taxonomy));
-                  }, 2000);
+		    setTimeout(function() {
+			$("div[data-is=category]").click();
+			$("span[data-is=JSON]").click();
+			var i = ($(".json_container").text().split(']')[2]+"]}");
+			console.log(JSON.stringify(JSON.parse(i.slice(2, i.length)).taxonomy));
+		    }, 2000);
                 }
                 return _consoleLog.apply(console, arguments);
             };
+
             $("div[data-is=text][data-does=sample]").click();
             $("textarea").val(address);
             $(".btn[data-is=submit]").click();
