@@ -65,6 +65,8 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
   var sugar = false;
   var cholesterol = false;
   var sodium = false;
+  var carbs = false;
+  var proteins = false;
   if (data.fiberContent) {
     fibers = true;
   }
@@ -95,6 +97,12 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
   if (data.sodiumContent) {
     sodium = true;
   }
+  if (data.carbohydrateContent) {
+    carbs = true;
+  }
+  if (data.proteinContent) {
+    proteins = true;
+  }
 
   $('#label').nutritionLabel({
     'showItemName' : true,
@@ -114,6 +122,8 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
     'showSugars': sugar,
     'showCholesterol': cholesterol,
     'showSodium':sodium,
+    'showTotalCarb':carbs,
+    'showProteins':proteins, 
 
     'itemName': data.name,
     'valueServingUnitQuantity' : data.servingReference.split(" ")[0],
@@ -123,13 +133,13 @@ $.getJSON(location.pathname.substring(1).split(".")[0]+".json", function (data) 
     'valueCalories' : data.calories.amount,
     'valueFatCalories' : data.caloriesFromFat.amount,
     'valueTotalFat' : data.fatContent.amount,
+
     'valueSatFat' : (data.saturatedFatContent ? data.saturatedFatContent.amount : null),
     'valueCholesterol' : (data.cholesterolContent ? data.cholesterolContent.amount : null),
     'valueSodium' : (data.sodiumContent ? data.sodiumContent.amount : null),
-    'valueTotalCarb' : data.carbohydrateContent.amount,
+    'valueTotalCarb' : (data.carbohydrateContent ? data.carbohydrateContent.amount : null),
     'valueSugars' : (data.sugarContent ? data.sugarContent.amount : null),
-    'valueProteins' : data.proteinContent.amount,
-    // optionals
+    'valueProteins' : (data.proteinContent ? data.proteinContent.amount : null),
     'valueFibers': (data.fiberContent ? data.fiberContent.amount : null),
     'valueTransFat': (data.transFatContent ? data.transFatContent.amount : null),
     'valueVitaminA': parseInt((data.vitaminA ? data.vitaminA.dv : 0), 10),
