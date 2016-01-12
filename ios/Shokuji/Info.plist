@@ -24,8 +24,8 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Roboto.ttf</string>
 		<string>Hybrea-Regular.ttf</string>
-		<string>Roboto-Bold.ttf</string>
 		<string>RobotoCondensed-Light.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
