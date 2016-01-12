@@ -112,10 +112,11 @@
     button1 = [[UIButton alloc] initWithFrame:CGRectMake(80, margin+110, self.view.frame.size.width - 160, 40)];
     button1.layer.cornerRadius = 20;
     button1.backgroundColor = [UIColor colorWithRed:68/255.0 green:138/255.0 blue:255/255.0 alpha:1];
+    
     [self.view addSubview:button1];
     
     UILabel* label1 = [[UILabel alloc] initWithFrame:button1.frame];
-    label1.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
+    label1.font = [UIFont fontWithName:@"Avenir Next" size:16];
     label1.textAlignment = NSTextAlignmentCenter;
     label1.textColor = [UIColor whiteColor];
     label1.text = @"Take a Photo";
@@ -129,26 +130,26 @@
     [self.view addSubview:button2];
     
     UILabel* label2 = [[UILabel alloc] initWithFrame:button2.frame];
-    label2.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:20];
+    label2.font = [UIFont fontWithName:@"Avenir Next" size:16];
     label2.textAlignment = NSTextAlignmentCenter;
     label2.textColor = [UIColor whiteColor];
     label2.text = @"Choose Photo";
     [self.view addSubview:label2];
     [button2 addTarget:self action:@selector(choosePhoto) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel* cal = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height-30, self.view.frame.size.width - 20, 30)];
-    cal.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
-    cal.textAlignment = NSTextAlignmentLeft;
-    cal.textColor = [UIColor whiteColor];
-    cal.text = [NSString stringWithFormat:@"%ld cal",(long)[[NSUserDefaults standardUserDefaults] integerForKey:@"cal"]];
-    [self.view addSubview:cal];
-    
-    UILabel* shots = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height-30, self.view.frame.size.width - 20, 30)];
-    shots.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
-    shots.textAlignment = NSTextAlignmentRight;
-    shots.textColor = [UIColor whiteColor];
-    shots.text = [NSString stringWithFormat:@"%ld snaps",(long)[[NSUserDefaults standardUserDefaults] integerForKey:@"snap"]];
-    [self.view addSubview:shots];
+//    UILabel* cal = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height-30, self.view.frame.size.width - 20, 30)];
+//    cal.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
+//    cal.textAlignment = NSTextAlignmentLeft;
+//    cal.textColor = [UIColor whiteColor];
+//    cal.text = [NSString stringWithFormat:@"%ld cal",(long)[[NSUserDefaults standardUserDefaults] integerForKey:@"cal"]];
+//    [self.view addSubview:cal];
+//    
+//    UILabel* shots = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height-30, self.view.frame.size.width - 20, 30)];
+//    shots.font = [UIFont fontWithName:@"RobotoCondensed-Light" size:18];
+//    shots.textAlignment = NSTextAlignmentRight;
+//    shots.textColor = [UIColor whiteColor];
+//    shots.text = [NSString stringWithFormat:@"%ld snaps",(long)[[NSUserDefaults standardUserDefaults] integerForKey:@"snap"]];
+//    [self.view addSubview:shots];
 
 }
 
