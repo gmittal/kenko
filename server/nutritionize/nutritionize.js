@@ -27,9 +27,7 @@ app.post('/nutritionize', function (req, res) {
   if (req.body.query) {
         var searchQuery = req.body.query;
         var netResult = exec('phantomjs --web-security=no --ssl-protocol=any --ignore-ssl-errors=yes deps/nutritionize-net.js "'+ searchQuery +'"', {silent:false}).output;
-      
-      if (netResult == "No results found.") {
-      
+      if (netResult != "No results found.") {
         var uuid = generatePushID();
         fs.writeFile(__dirname + "/label_templates/"+uuid+".json", netResult, function (err) {
           if (err) throw err;
