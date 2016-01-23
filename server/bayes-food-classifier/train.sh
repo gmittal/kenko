@@ -4,7 +4,7 @@
 # Food training script
 
 NUM_FOOD_LABELS=$(expr $(sed -n '$=' training_data/imagenet.food\[food\].txt) + $(sed -n '$=' training_data/imagenet.drink\[food\].txt))
-NUM_NON_FOOD_LABELS=$(sed -n '$=' training_data/imagenet.urban\[not-food\].txt)
+NUM_NON_FOOD_LABELS=$(expr $(sed -n '$=' training_data/imagenet.urban\[not-food\].txt) + $(sed -n '$=' training_data/imagenet.people\[not-food\].txt))
 TOTAL_LABELS=$(expr $NUM_FOOD_LABELS + $NUM_NON_FOOD_LABELS)
 LABELS_COMPLETE=0
 echo "NUM_FOOD_LABELS: " $NUM_FOOD_LABELS
