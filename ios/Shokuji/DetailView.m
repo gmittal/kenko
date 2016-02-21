@@ -227,13 +227,13 @@
         facts = [[UIImageView alloc] initWithImage:image];
 //        float ratio = (dWidth - 40.0) / json[@"width"];
 //        NSLog(@"%f",ratio);
-        NSLog(@" image %@",json[@"height"]);
-        facts.frame = CGRectMake(20,100,dWidth-40, 400 );
+        NSLog(@" image %@",json[@"LABEL_HEIGHT"]);
+        facts.frame = CGRectMake(20,90,dWidth-40, [json[@"LABEL_HEIGHT"] floatValue]);
 //        facts.frame = CGRectMake(30, 30, 200, 200);
         facts.image = imagef;
         
         
-        factsbg = [[UIView alloc] initWithFrame:CGRectMake(20, 100, dWidth-40, 400)];
+        factsbg = [[UIView alloc] initWithFrame:CGRectMake(20, 90, dWidth-40, [json[@"LABEL_HEIGHT"] floatValue])];
         factsbg.backgroundColor = [UIColor whiteColor];
         factsbg.layer.cornerRadius = 10;
         
@@ -290,7 +290,13 @@
         [scroll addSubview:cross];
         
         UILabel* detail = [[UILabel alloc] initWithFrame:CGRectMake(30,margin+250, dWidth - 60, 100)];
-        detail.text = @"There was an error processing the image.";
+        
+        if ([json[@"Error"] isEqualToString:@"That is not food."] || [json[@"Error"] isEqualToString:@"Could not verify food image."]) {
+            detail.text = @"I'm not sure that's food you're looking at...";
+        } else if([json[@"Error"] isEqualToString:@"Error processing image."]) {
+            detail.text = @"There was an error processing your image.";
+        }
+        
         detail.textAlignment = NSTextAlignmentCenter;
         detail.textColor = [UIColor whiteColor];
         detail.numberOfLines = 3;
