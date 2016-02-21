@@ -27,6 +27,7 @@ app.post('/nutritionize', function (req, res) {
   if (req.body.query) {
         var searchQuery = req.body.query;
         var netResult = exec('phantomjs --web-security=no --ssl-protocol=any --ignore-ssl-errors=yes deps/nutritionize-net.js "'+ searchQuery +'"', {silent:false}).output;
+      netResult = netResult.substr(netResult.indexOf("{"), netResult.length)
       if (netResult != "No results found.") {
         var uuid = generatePushID();
         fs.writeFile(__dirname + "/label_templates/"+uuid+".json", netResult, function (err) {
@@ -39,14 +40,15 @@ app.post('/nutritionize', function (req, res) {
               console.log(process.env.HOSTNAME+"/"+uuid+".html");
               var photo = JSON.parse(exec('phantomjs deps/camera.js http://localhost:4001/'+uuid+'.html', {silent:false}).output);
 
-              var uploaded_image = exec('curl -F "file=@'+photo.rawImage_path+'" https://file.io', {silent:true}).output.split("\n");
-              rm('-rf', photo.rawImage_path); // delete what is now stored in the cloud
+              var uploaded_image = exec('curl -F "file=@'+photo.rawImage_path+'" https://file.io', {silent:false}).output.split("\n");
+//              rm('-rf', photo.rawImage_path); // delete what is now stored in the cloud
               console.log(JSON.parse(uploaded_image[uploaded_image.length-1]).link);
-              var finalFinish = JSON.parse(netResult);
+		console.log(netResult);
+		var finalFinish = JSON.parse(netResult);
 		finalFinish["LABEL_HEIGHT"] = photo.size.height;
 		finalFinish["LABEL_WIDTH"] = photo.size.width;
-              finalFinish["NUTRITION_LABEL"] = JSON.parse(uploaded_image[uploaded_image.length-1]).link;
-              res.send(finalFinish);
+		finalFinish["NUTRITION_LABEL"] = JSON.parse(uploaded_image[uploaded_image.length-1]).link;
+		res.send(finalFinish);
             });
           });
 

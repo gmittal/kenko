@@ -33,9 +33,9 @@ page.open(system.args[1], function (status) {
         page.clipRect = {top: 10, left: 10, width: width+18, height: height+18};
 
         var labelUUID = generatePushID();
-        page.render("nutritionize/labels/"+labelUUID+".png");
+        page.render("label_templates/"+labelUUID+".png");
 
-        console.log(JSON.stringify({size: labelDimensions, rawImage_path: fs.workingDirectory+"/nutritionize/labels/"+labelUUID+".png"}));
+        console.log(JSON.stringify({size: labelDimensions, rawImage_path: fs.workingDirectory+"/label_templates/"+labelUUID+".png"}));
         phantom.exit();
 
     }

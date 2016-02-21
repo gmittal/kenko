@@ -12,7 +12,7 @@ echo "NUM_NON_FOOD_LABELS: " $NUM_NON_FOOD_LABELS
 echo "[" >> train.json
 
 # Run all 'food' labeled imagenet stuff through
-for line in $(cat training_data/imagenet.food\[food\].txt); do
+for line in $(cat training_data/imagenet.urban\[not-food\].txt); do
     PERCENT_COMPLETE=$(echo "scale = 1; $LABELS_COMPLETE * 100 / $TOTAL_LABELS" | bc)
     echo "["$PERCENT_COMPLETE"%]" $line # or whaterver you want to do with the $line variable
     resultCloud=$(phantomjs visualize.js $line)
@@ -20,7 +20,7 @@ for line in $(cat training_data/imagenet.food\[food\].txt); do
     if [[ $resultCloud != *"Error: 400 Bad Request"* ]]
     then
       verifiedJSON=$(echo $resultCloud | jq ".name")
-      echo "{'text': $verifiedJSON, 'label': 'food'}" >> train.json
+      echo "{'text': $verifiedJSON, 'label': 'notfood'}," >> train.json
     fi
 done
 

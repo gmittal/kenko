@@ -50,7 +50,7 @@ app.post('/food-analysis', function (req, res) {
 		res.send({"Error": "Cannot verify food image.", "object": caption});
             } else if (foodDelegate == "NOT FOOD") {
 		res.send({"Error": "That is not food.", "object": caption});
-            } else if (foodDelegate == "FOOD") { // aha! I see that it is food!
+            } else if (foodDelegate) { // aha! I see that it is food!
                 // Run nutrition database search
                 request.post("http://usekenko.co:3006/nutritionize", {form: {"query": caption}}, function (nutriErr, nutriRes, nutriBody) {
                  // console.log(nutriRes.statusCode);
