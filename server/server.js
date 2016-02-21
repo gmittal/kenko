@@ -41,10 +41,10 @@ app.post('/food-analysis', function (req, res) {
       // recognize image
       request.post('http://usekenko.co:3005/remote-identify',{form: {'image_url': image_url}}, function (e, r, b) {
         if (!e && r.statusCode == 200) {
-            var caption = "a " + JSON.parse(b).name;
+            var caption = JSON.parse(b).name;
             console.log(caption);
           
-	    request.post("http://gateway-a.watsonplatform.net/calls/text/TextGetRankedTaxonomy", {"form": {"apikey":process.env.ALCHEMY_KEY, "text": caption, "outputMode": "json"}}, function (errorAl, resAl, bodyAl) {
+	    request.post("http://gateway-a.watsonplatform.net/calls/text/TextGetRankedTaxonomy", {"form": {"apikey":process.env.ALCHEMY_KEY, "text": "a " + caption, "outputMode": "json"}}, function (errorAl, resAl, bodyAl) {
 		bodyAl = JSON.parse(bodyAl);
 		if (bodyAl["status"] != "ERROR") {
 		    del = bodyAl["taxonomy"][0].label;
