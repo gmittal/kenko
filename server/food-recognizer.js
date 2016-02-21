@@ -14,8 +14,10 @@ function evaluate(page, func) {
 }
 
 page.open("http://demo1.alchemyapi.com/language.php", function (status) {
+ //   console.log("Something happened");
   var phantomLogCounter = 0;
   page.onConsoleMessage = function (msg) {
+
       if (msg.indexOf(",") > -1) {
       if (system.args[2] != "--json") {
         if (JSON.parse(msg).length > 0) {
@@ -40,18 +42,27 @@ page.open("http://demo1.alchemyapi.com/language.php", function (status) {
         console.log('UNKNOWN');
         phantom.exit();
     } else {
-        var address = system.args[1];
+        var address = "a " + system.args[1];
+//	console.log("wooo");
         var results = page.evaluate(function(address) {
             var logcounter = 0;
             var _consoleLog = console.log;
+	   
+
             console.log = function() {
+		//console.log($(".json_container").text().substr(0, $(".json_container").text().indexOf("}")+1));
                 logcounter++;
+	//	console.log($(".error").text());
+
                 if (logcounter == 11) {
 		    setTimeout(function() {
-			$("div[data-is=category]").click();
-			$("span[data-is=JSON]").click();
-			var i = ($(".json_container").text().split(']')[2]+"]}");
-			console.log(JSON.stringify(JSON.parse(i.slice(2, i.length)).taxonomy));
+			console.log($(".json_container").text().substr(0, $(".json_container").text().indexOf("}")+1));
+
+			    $("div[data-is=category]").click();
+			    $("span[data-is=JSON]").click();
+			    var i = ($(".json_container").text().split(']')[2]+"]}");
+			    console.log(JSON.stringify(JSON.parse(i.slice(2, i.length)).taxonomy));
+		
 		    }, 2000);
                 }
                 return _consoleLog.apply(console, arguments);
