@@ -41,34 +41,50 @@ app.post('/food-analysis', function (req, res) {
       // recognize image
       request.post('http://usekenko.co:3005/remote-identify',{form: {'image_url': image_url}}, function (e, r, b) {
         if (!e && r.statusCode == 200) {
-            var caption = JSON.parse(b).name;
+            var caption = "a " + JSON.parse(b).name;
             console.log(caption);
-            // Run some NLP Bayesian magic to determine whether what we're looking at is food or not
-            // Will need to train classifier using CloudSight responses + ImageNet
-            var foodDelegate = exec('phantomjs '+__dirname+'/food-recognizer.js "'+ caption +'"').output.split("\n")[0];
-            if (foodDelegate == "UNKNOWN") {
-		res.send({"Error": "Cannot verify food image.", "object": caption});
-            } else if (foodDelegate == "NOT FOOD") {
-		res.send({"Error": "That is not food.", "object": caption});
-            } else if (foodDelegate) { // aha! I see that it is food!
-                // Run nutrition database search
-                request.post("http://usekenko.co:3006/nutritionize", {form: {"query": caption}}, function (nutriErr, nutriRes, nutriBody) {
-                 // console.log(nutriRes.statusCode);
-                  if (!nutriErr && nutriRes.statusCode == 200) {
-                      console.log(JSON.parse(nutriBody).NUTRITION_LABEL);
-                    res.send(nutriBody); // send the nutrition label
-                  } else {
-                      res.send({"Error": "Error processing image.", "object": caption});
-                  }
-                }); // end nutrition search
-            } // end if FOOD
-        } else {
-          res.send({"Error": "Error processing image."});
-        }
+          
+	    request.post("http://gateway-a.watsonplatform.net/calls/text/TextGetRankedTaxonomy", {"form": {"apikey":process.env.ALCHEMY_KEY, "text": caption, "outputMode": "json"}}, function (errorAl, resAl, bodyAl) {
+		bodyAl = JSON.parse(bodyAl);
+		if (bodyAl["status"] != "ERROR") {
+		    del = bodyAl["taxonomy"][0].label;
+		    var foodDelegate;
+		    if (del.indexOf("food") > -1 || del.indexOf("drink") > -1 || del.indexOf("beverage") > -1) {
+			foodDelegate = "FOOD";
+		    } else {
+			foodDelegate = "NOT FOOD";
+		    }
+		    
+		    console.log(foodDelegate);
+
+		    if (foodDelegate == "UNKNOWN") {
+			res.send({"Error": "Cannot verify food image.", "object": caption});
+		    } else if (foodDelegate == "NOT FOOD") {
+			res.send({"Error": "That is not food.", "object": caption});
+		    } else if (foodDelegate) { // aha! I see that it is food!
+			// Run nutrition database search
+			request.post("http://usekenko.co:3006/nutritionize", {form: {"query": caption}}, function (nutriErr, nutriRes, nutriBody) {
+			    // console.log(nutriRes.statusCode);
+			    if (!nutriErr && nutriRes.statusCode == 200) {
+				console.log(JSON.parse(nutriBody).NUTRITION_LABEL);
+				res.send(nutriBody); // send the nutrition label
+			    } else {
+				res.send({"Error": "Error processing image.", "object": caption});
+			    }
+			}); // end nutrition search
+		    } // end if FOOD
+		} else {
+		    console.log("Food recognizer returned error");
+		    res.send({"Error": "That is not food.", "object": caption});
+		}
+		}); // end alchemy
+	} else {
+	    res.send({"Error": "Error processing image."});
+	}
       });
     });
   } else {
-    res.send({"Error": "Missing parameters."});
+    res.send({"Error": "Missing parameters."})
   }
 }); // end food-analysis
 
