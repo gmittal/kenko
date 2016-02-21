@@ -47,19 +47,22 @@ app.post('/food-analysis', function (req, res) {
 	    request.post("http://gateway-a.watsonplatform.net/calls/text/TextGetRankedTaxonomy", {"form": {"apikey":process.env.ALCHEMY_KEY, "text": "a " + caption, "outputMode": "json"}}, function (errorAl, resAl, bodyAl) {
 		bodyAl = JSON.parse(bodyAl);
 		if (bodyAl["status"] != "ERROR") {
-		    del = bodyAl["taxonomy"][0].label;
 		    var foodDelegate;
-		    if (del.indexOf("food") > -1 || del.indexOf("drink") > -1 || del.indexOf("beverage") > -1) {
-			foodDelegate = "FOOD";
+		    if (bodyAl["taxonomy"].length > 0) {
+			del = bodyAl["taxonomy"][0].label;
+			
+			if (del.indexOf("food") > -1 || del.indexOf("drink") > -1 || del.indexOf("beverage") > -1) {
+			    foodDelegate = "FOOD";
+			} else {
+			    foodDelegate = "NOT FOOD";
+			}
 		    } else {
 			foodDelegate = "NOT FOOD";
 		    }
 		    
 		    console.log(foodDelegate);
 
-		    if (foodDelegate == "UNKNOWN") {
-			res.send({"Error": "Cannot verify food image.", "object": caption});
-		    } else if (foodDelegate == "NOT FOOD") {
+		    if (foodDelegate == "NOT FOOD") {
 			res.send({"Error": "That is not food.", "object": caption});
 		    } else if (foodDelegate) { // aha! I see that it is food!
 			// Run nutrition database search
