@@ -233,9 +233,12 @@
         facts.image = imagef;
         
         
+        
         factsbg = [[UIView alloc] initWithFrame:CGRectMake(20, 90, dWidth-40, [json[@"LABEL_HEIGHT"] floatValue])];
         factsbg.backgroundColor = [UIColor whiteColor];
         factsbg.layer.cornerRadius = 10;
+        
+        scroll.contentSize = CGSizeMake(dWidth, dHeight+10+[json[@"LABEL_HEIGHT"] floatValue]);
         
         [scroll addSubview:factsbg];
         [scroll addSubview:facts];
